@@ -86,9 +86,9 @@ class Stubber():
         "Create stubs for all configured modules"
         self._log.info("Start micropython-stubber v{} on {}".format(stubber_version, self.firmware_ID()))
         # start with the (more complex) modules with a / first to reduce memory problems
-        self.module = [m for m in self.modules if '/' in m] + [m for m in self.modules if '/' not in m]
+        self.modules = [m for m in self.modules if '/' in m] + [m for m in self.modules if '/' not in m]
         gc.collect()
-        for module_name in self.module:
+        for module_name in self.modules:
             #re-evaluate
             if self.include_nested:
                 self.include_nested = gc.mem_free() > 3200
