@@ -8,7 +8,7 @@ import os
 import sys
 from time import sleep_us
 from ujson import dumps
-_version='1.1.0'
+_version='1.1.2'
 try:
  from machine import resetWDT
 except:
@@ -32,8 +32,8 @@ class Stubber():
    ensure_folder(path+"/")
   except:
    pass
-  self.problematic=["upysh","webrepl_setup","http_client","http_client_ssl","http_server","http_server_ssl"]
-  self.excluded=["webrepl","_webrepl","webrepl_setup"]
+  self.problematic=["upysh","webrepl","_webrepl","webrepl_setup","http_client","http_client_ssl","http_server","http_server_ssl"]
+  self.excluded=["port_diag","example_sub_led.py","example_pub_button.py"]
   self.modules=['upip','_boot','_onewire','_thread','_webrepl','ak8963','apa102','apa106','array','binascii','btree','builtins','cmath','collections','curl','dht','display','ds18x20','errno','esp','esp32','example_pub_button','example_sub_led','flashbdev','framebuf','freesans20','functools','gc','gsm','hashlib','heapq','http_client','http_client_ssl','http_server','http_server_ssl','inisetup','io','json','logging','lwip','machine','math','microWebSocket','microWebSrv','microWebTemplate','micropython','mpu6500','mpu9250','neopixel','network','ntptime','onewire','os','port_diag','pye','random','re','requests','select','socket','socketupip','ssd1306','ssh','ssl','struct','sys','time','tpcalib','uasyncio','uasyncio/core','ubinascii','ucollections','ucryptolib','uctypes','uerrno','uhashlib','uheapq','uio','ujson','umqtt/robust','umqtt/simple','uos','upip_utarfile','upysh','urandom','ure','urequests','urllib/urequest','uselect','usocket','ussl','ustruct','utime','utimeq','uwebsocket','uzlib','webrepl','webrepl_setup','websocket','websocket_helper','writer','ymodem','zlib']
   self.include_nested=gc.mem_free()>3200
  def create_all_stubs(self):
@@ -42,11 +42,11 @@ class Stubber():
   for module_name in self.modules:
    if self.include_nested:
     self.include_nested=gc.mem_free()>3200
-   if module_name.startswith("_")and module_name!='_thread':
-    continue
    if module_name in self.problematic:
+    print("Skip module: {:<20}        : Known problematic".format(module_name))
     continue
    if module_name in self.excluded:
+    print("Skip module: {:<20}        : Excluded".format(module_name))
     continue
    file_name="{}/{}.py".format(self.path,module_name.replace(".","/"))
    gc.collect()
@@ -58,14 +58,13 @@ class Stubber():
     pass
    gc.collect()
  def create_module_stub(self,module_name:str,file_name:str=None):
-  if module_name.startswith("_")and module_name!='_thread':
-   return
-  if module_name in self.problematic:
-   return
+  if file_name is None:
+   file_name=module_name.replace('.','/')+".py"
   if '/' in module_name:
    ensure_folder(path=file_name)
    module_name=module_name.replace('/','.')
    if not self.include_nested:
+    print("SKIPPING nested module:{}".format(module_name))
     return
   try:
    new_module=__import__(module_name)
@@ -200,13 +199,10 @@ def get_obj_attributes(obj:object):
  return result,errors
 def main():
  global stubber
- print("start")
  stubber=Stubber()
- print("create")
+ stubber.clean()
  stubber.create_all_stubs()
- print("report")
  stubber.report()
- print("done")
 main()
 # Created by pyminifier (https://github.com/liftoff/pyminifier)
 

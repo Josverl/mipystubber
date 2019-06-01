@@ -10,7 +10,7 @@ import sys
 from time import sleep_us
 from ujson import dumps
 #pylint: disable=bare-except
-_version = '1.1.0'
+_version = '1.1.2'
 # deal with firmware specific implementations
 try:
     from machine import resetWDT
@@ -44,8 +44,8 @@ class Stubber():
         except:
             pass
             #self._log.error("error creating stub folder {}".format(path))
-        self.problematic = ["upysh", "webrepl_setup", "http_client", "http_client_ssl", "http_server", "http_server_ssl"]
-        self.excluded = ["webrepl", "_webrepl", "webrepl_setup"]
+        self.problematic = ["upysh", "webrepl", "_webrepl", "webrepl_setup", "http_client", "http_client_ssl", "http_server", "http_server_ssl"]
+        self.excluded = [ "port_diag","example_sub_led.py","example_pub_button.py"]
         # there is no option to discover modules from upython, need to hardcode
         # below contains the combines modules from  Micropython ESP8622, ESP32 and Loboris Modules
         self.modules = ['upip', #do upip early
@@ -73,14 +73,14 @@ class Stubber():
             if self.include_nested:
                 self.include_nested = gc.mem_free() > 3200
             
-            if module_name.startswith("_") and module_name != '_thread':
-                #self._log.warning("Skip module: {:<20}        : internal ".format(module_name))
-                continue
+            # if module_name.startswith("_") and module_name != '_thread':
+            #     print("Skip module: {:<20}        : internal ".format(module_name))
+            #     continue
             if module_name in self.problematic:
-                #self._log.warning("Skip module: {:<20}        : Known problematic".format(module_name))
+                print("Skip module: {:<20}        : Known problematic".format(module_name))
                 continue
             if module_name in self.excluded:
-                #self._log.warning("Skip module: {:<20}        : Excluded".format(module_name))
+                print("Skip module: {:<20}        : Excluded".format(module_name))
                 continue
 
             file_name = "{}/{}.py".format(
@@ -90,7 +90,6 @@ class Stubber():
             gc.collect()
             m1 = gc.mem_free()
             print("Stub module: {:<20} to file: {:<55} mem:{:>5}".format(module_name, file_name, m1))
-            #self._log.info("Stub module: {:<20} to file: {:<55} mem:{:>5}".format(module_name, file_name, m1))
             try:
                 self.create_module_stub(module_name, file_name)
             except:
@@ -102,22 +101,16 @@ class Stubber():
 
     def create_module_stub(self, module_name: str, file_name: str = None):
         "Create a Stub of a single python module"
-        if module_name.startswith("_") and module_name != '_thread':
-            #self._log.warning("SKIPPING internal module:{}".format(module_name))
-            return
 
-        if module_name in self.problematic:
-            #self._log.warning("SKIPPING problematic module:{}".format(module_name))
-            return
-        # if file_name is None: 
-        #     file_name = module_name.replace('.', '/') + ".py"
+        if file_name is None: 
+            file_name = module_name.replace('.', '/') + ".py"
 
         if '/' in module_name:
             #for nested modules
             ensure_folder(path=file_name)
             module_name = module_name.replace('/', '.')
             if not self.include_nested:
-                #self._log.warning("SKIPPING nested module:{}".format(module_name))
+                print("SKIPPING nested module:{}".format(module_name))
                 return
 
         #import the module (as new_module) to examine it
@@ -204,7 +197,6 @@ class Stubber():
         except:
             pass
 
-
     def clean(self):
         "Remove all files from the stub folder"
         #self._log.info("Clean/remove files in stubfolder: {}".format(self.path))
@@ -275,7 +267,6 @@ def ensure_folder(path: str):
     #     "Add additional modules to be exported"
     #     self.modules = sorted(set(self.modules) | set(modules))
 
-
 def firmware_ID(asfile: bool = False):
     "Get a sensible firmware ID"
     if os.uname().sysname in 'esp32_LoBo':
@@ -291,7 +282,6 @@ def firmware_ID(asfile: bool = False):
         for c in chars:
             fid = fid.replace(c, "_")
     return fid
-
 
 def get_root():
     "Determine the root folder of the device"
@@ -321,8 +311,6 @@ def get_obj_attributes(obj: object):
     gc.collect()
     return result, errors
 
-
-
 def main():
     global stubber
     # try:
@@ -330,13 +318,10 @@ def main():
     # except:
     #     pass
     # Now clean up and get to work
-    print("start")
     stubber = Stubber()
     #stubber.add_modules(['xyz'])
-    #stubber.clean()
-    print("create")
+    stubber.clean()
     stubber.create_all_stubs()
-    print("report")
     stubber.report()
-    print("done")
+
 main()
