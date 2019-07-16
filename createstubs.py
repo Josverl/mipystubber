@@ -260,13 +260,11 @@ class Stubber():
         try:
             # write json by node to reduce memory requirements
             with open(f_name, 'w') as f:
-                print('starting header')
                 f.write('{')
                 f.write(dumps(self._report_fwi)[1:-1])
                 f.write(',')
                 f.write(dumps(self._report_stb)[1:-1])
                 f.write(',')
-                print('starting modules')
                 f.write('"modules" :[')
                 start = True
                 for n in self._report:
@@ -274,9 +272,7 @@ class Stubber():
                         start = False
                     else:
                         f.write(',')
-                    print('starting mod')
                     f.write(dumps(n))
-                print('almost done')
                 f.write(']}')
         except:
             self._log.error("Failed to create the report.")
