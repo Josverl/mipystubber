@@ -34,6 +34,25 @@ you will need to configure 2 modules
 For simplicity in documentation I have configured most settings at workspace project level.
 The same settings could be configured at User level, where they would become defaults for all your projects, and can be overridden per workspace/project.
 
+#### Relevant vscode settings
+
+Setting | Default   | Description  | ref  
+--------|-----------|--------------|--- 
+python.autoComplete.|||[Autocomplete Settings](https://code.visualstudio.com/docs/python/settings-reference#_autocomplete-settings)
+extraPaths | []	| Specifies locations of additional packages for which to load autocomplete data.| 
+typeshedPaths | [] | Specifies paths to local typeshed repository clone(s) for the Python language server. | [Git](https://github.com/DonJayamanne/pythonVSCode/commit/7a90e863c1742b7c7d8a6612596bdc0a34a595d1)
+python.linting. ||| [Linting Settings](https://code.visualstudio.com/docs/python/settings-reference#_linting-settings)
+enabled | true   | Specifies whether to enable linting in general.|
+pylintEnabled | true | Specifies whether to enable Pylint.|
+
+#### Python Language Server settings  
+The language server settings apply when python.jediEnabled is false.
+Setting | Default   | Description | ref 
+--------|-----------|--------------|--
+python.jediEnabled | Default *true*, must be set to FALSE | Indicates whether to use Jedi as the IntelliSense engine (true) or the Microsoft Python Language Server (false). Note that the language server requires a platform that supports .NET Core 2.1 or newer. |
+python.analysis. ||| [code analysis settings)](https://code.visualstudio.com/docs/python/settings-reference#_code-analysis-settings)
+typeshedPaths | [] | Paths to look for typeshed modules on GitHub.|
+
 Note: the below settings include the paths to multiple folders, containing stubs for different firmware. 
 you should remove ( or //comment ) the lines of firmwares that you to not use.
 

@@ -1,3 +1,8 @@
+#%% Markdown
+# ## create an overview  of modules across different firmwares 
+
+#%% load known modules
+
 lobo_esp32 = [ ##Loboris
             '_thread', 'ak8963', 'array', 'binascii', 'btree', 'builtins',
             'cmath', 'collections', 'curl', 'display', 'errno', 'framebuf',
@@ -59,6 +64,8 @@ print( "mpy  esp8622:", len(mpy_esp8622))
 print( "mpy  esp32  :", len(mpy_esp32) ) 
 print( "lobo esp32  :", len(lobo_esp32 )) 
 
+#%% calculate diffs 
+
 shared_esp32 = set(mpy_esp32) & set(lobo_esp32) 
 print( "Shared esp32 modules :", len(shared_esp32 )) 
 
@@ -80,7 +87,7 @@ print (sorted(mpy_only))
 print("\nlobo_esp32_only = ",end='')
 print (sorted(lobo_esp32_only))
 
-#Which are shared between mpy esp32 / esp8622 
+#%% Which are shared between mpy esp32 / esp8622 
 
 shared_mpyEspXX = set(mpy_esp8622) & set(mpy_esp32) 
 print( "Shared mpy espxxx modules :", len(shared_mpyEspXX )) 
@@ -89,7 +96,7 @@ print("\nall = ",end='')
 print (sorted(set(mpy_esp32) | set(lobo_esp32) | set(mpy_esp8622)))
 
 
-## result is : 
+#%%  result is : 
 
 shared = ['_thread', 'array', 'binascii', 'btree', 'builtins', 'cmath', 'collections', 'errno', 'framebuf', 
             'gc', 'hashlib', 'heapq', 'io', 'json', 'machine', 'math', 'micropython', 'network', 'os', 'random', 
@@ -122,3 +129,6 @@ all = [ '_boot', '_onewire', '_thread', '_webrepl', 'ak8963', 'apa102', 'apa106'
 # todo: 
 
 
+
+
+#%%
