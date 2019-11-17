@@ -22,8 +22,11 @@
     ],
 
      "cSpell.words": [
+        "Firmwares",
         "Loboris",
+        "Pylint",
         "asfile",
+        "createstubs",
         "nodename",
         "sysname",
         "uname",
