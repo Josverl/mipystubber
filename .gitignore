@@ -16,3 +16,4 @@ M5Stack
 
 # ignore stubs 
 # stubs
+stubs/M5*
