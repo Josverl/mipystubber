@@ -189,13 +189,13 @@ ref: https://learn.adafruit.com/micropython-basics-loading-modules/frozen-module
 ### Tested Firmwares :
 | Firmware              | Release  | Version                          | Comments        |
 |-----------------------|----------|----------------------------------|-----------------|
-| MicroPython ESP32     | 1.10.0   | v1.10-247-g0fb15fc3f             | umqtt modules missing
+| MicroPython ESP32     | 1.10.0   | v1.10-247-g0fb15fc3f             | 
 | MicroPython ESP32     | 1.11.0   |                                  | 
 | MicroPython ESP8266   | 1.9.4    |                                  | 
 | MicroPython ESP8266   | 1.9.4    |                                  | 
 | MicroPython ESP8266   | 1.10.0   |                                  | 
 | MicroPython ESP8266   | 1.11.0   |                                  | 
-| Loboris ESP32         | 3.2.24     | ESP32_LoBo_v3.2.24 on 2018-09-06 | includes _threads module 
+| Loboris ESP32         | 3.2.24   | ESP32_LoBo_v3.2.24 on 2018-09-06 | includes _threads module 
 | M5Stack Flow          | 1.2.1    | based on ESP32_LoBo_v3.2.24      | 
 | M5Stack Flow          | 1.4.0-beta| based on MicroPython ESP32 1.11.0| 
 
@@ -213,9 +213,12 @@ ref: https://learn.adafruit.com/micropython-basics-loading-modules/frozen-module
 Due to the naming convention in micropython some modules will be duplicated , ie `uos` and `os` will both be included 
 
 
-## A WIP command line app for initiating micropython projects with VSCode
-If you want a command line interface to setup a new project and configure the settings as described above for you then take a look at : https://github.com/BradenM/micropy-cli
-It's still WiP, but it might help you along.
+## 'micropy' A command line tool for managing MicroPython projects with VSCode
+If you want a command line interface to setup a new project and configure the settings as described above for you then take a look at :  
+    https://github.com/BradenM/micropy-cli
+    `pip install micropy-cl`
+    then run `micropy init`
+
 
 
 # Licenses and contributions

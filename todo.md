@@ -1,9 +1,9 @@
 ## stubber : 
 ###  main 
 
-- resolve issues in main
-- integrate changes by braden
-- check/verify/add micropython frozen modules 
+Done - resolve issues in main
+Done - integrate changes by braden
+Done - check/verify/add micropython frozen modules 
 
   - See ESP32 : C:\develop\MyPython\micropython\ports\esp32\boards\manifest.py
 
@@ -21,22 +21,27 @@
         freeze('$(MPY_DIR)/drivers/onewire')
         include('$(MPY_DIR)/extmod/webrepl/manifest.py')
 
-        
-        
-
-
 
 - read RST files 
-- add prototypes from source / RST 
+
+- add prototypes from RST 
+        ref: https://github.com/python/mypy/blob/master/mypy/stubdoc.py
+
+- add prototypes from Source ? 
+        check if https://github.com/python/mypy/blob/master/mypy/stubgenc.py
+        might bge usefull
+
 - test to automerge common prototypes by stubber
+        ie. add common return types to make_stub_files.cfg
 
 - resolve import time issues 
 
 pylint : disable a few more ?
 
-support function decorators 
-- @micropython.native / viper / bytecode
- there is a CPython Dummy function decorators placeholder : https://github.com/micropython/micropython/blob/master/examples/micropython.py
+done -support function decorators 
+        - @micropython.native / viper / bytecode
+        is resolved by
+        there is a CPython Dummy function decorators placeholder : https://github.com/micropython/micropython/blob/master/examples/micropython.py
 
 
 # Subclassing FrameBuffer provides support for graphics primitives
@@ -46,7 +51,7 @@ class SSD1306(framebuf.FrameBuffer):
     from ssd1306 import  SSD1306_I2C
 
 
-# micropy - added issue https://github.com/BradenM/micropy-cli/issues/96
+Done # micropy - added issue https://github.com/BradenM/micropy-cli/issues/96
 .pylintrc logic 
 - ./src/lib path 
 - ./src/lib path 
