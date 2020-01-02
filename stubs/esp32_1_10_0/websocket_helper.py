@@ -1,4 +1,8 @@
-"Module 'websocket_helper' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'websocket_helper' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 DEBUG = 0
 binascii = None
 def client_handshake():

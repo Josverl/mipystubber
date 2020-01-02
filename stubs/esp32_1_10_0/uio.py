@@ -1,6 +1,11 @@
-"Module 'uio' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'uio' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 
-class BufferedWriter(): ...
+class BufferedWriter:
+    ''
     def flush():
         pass
 
@@ -8,7 +13,8 @@ class BufferedWriter(): ...
         pass
 
 
-class BytesIO(): ...
+class BytesIO:
+    ''
     def close():
         pass
 
@@ -34,7 +40,8 @@ class BytesIO(): ...
         pass
 
 
-class FileIO(): ...
+class FileIO:
+    ''
     def close():
         pass
 
@@ -63,9 +70,11 @@ class FileIO(): ...
         pass
 
 
-class IOBase(): ...
+class IOBase:
+    ''
 
-class StringIO(): ...
+class StringIO:
+    ''
     def close():
         pass
 
@@ -91,7 +100,8 @@ class StringIO(): ...
         pass
 
 
-class TextIOWrapper(): ...
+class TextIOWrapper:
+    ''
     def close():
         pass
 

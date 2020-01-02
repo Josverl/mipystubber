@@ -1,6 +1,11 @@
-"Module 'dht' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'dht' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 
-class DHT11(): ...
+class DHT11:
+    ''
     def humidity():
         pass
 
@@ -11,7 +16,8 @@ class DHT11(): ...
         pass
 
 
-class DHT22(): ...
+class DHT22:
+    ''
     def humidity():
         pass
 
@@ -22,7 +28,8 @@ class DHT22(): ...
         pass
 
 
-class DHTBase(): ...
+class DHTBase:
+    ''
     def measure():
         pass
 

@@ -1,6 +1,11 @@
-"Module 'machine' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'machine' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 
-class ADC(): ...
+class ADC:
+    ''
     ATTN_0DB = 0
     ATTN_11DB = 3
     ATTN_2_5DB = 1
@@ -19,17 +24,19 @@ class ADC(): ...
         pass
 
 
-class DAC(): ...
+class DAC:
+    ''
     def write():
         pass
 
 DEEPSLEEP = 4
 DEEPSLEEP_RESET = 4
-EXT0_WAKE = 2
-EXT1_WAKE = 3
+EXT0_WAKE = 1
+EXT1_WAKE = 2
 HARD_RESET = 2
 
-class I2C(): ...
+class I2C:
+    ''
     def init():
         pass
 
@@ -66,9 +73,10 @@ class I2C(): ...
     def writeto_mem():
         pass
 
-PIN_WAKE = 2
+PIN_WAKE = 1
 
-class PWM(): ...
+class PWM:
+    ''
     def deinit():
         pass
 
@@ -83,15 +91,15 @@ class PWM(): ...
 
 PWRON_RESET = 1
 
-class Pin(): ...
+class Pin:
+    ''
     IN = 1
     IRQ_FALLING = 2
     IRQ_RISING = 1
     OPEN_DRAIN = 7
     OUT = 3
     PULL_DOWN = 1
-    PULL_HOLD = 4
-    PULL_UP = 2
+    PULL_UP = 0
     WAKE_HIGH = 5
     WAKE_LOW = 4
     def init():
@@ -110,7 +118,8 @@ class Pin(): ...
         pass
 
 
-class RTC(): ...
+class RTC:
+    ''
     def datetime():
         pass
 
@@ -123,7 +132,8 @@ class RTC(): ...
 SLEEP = 2
 SOFT_RESET = 5
 
-class SPI(): ...
+class SPI:
+    ''
     LSB = 1
     MSB = 0
     def deinit():
@@ -145,7 +155,8 @@ class SPI(): ...
         pass
 
 
-class Signal(): ...
+class Signal:
+    ''
     def off():
         pass
 
@@ -155,10 +166,11 @@ class Signal(): ...
     def value():
         pass
 
-TIMER_WAKE = 4
-TOUCHPAD_WAKE = 5
+TIMER_WAKE = 3
+TOUCHPAD_WAKE = 4
 
-class Timer(): ...
+class Timer:
+    ''
     ONE_SHOT = 0
     PERIODIC = 1
     def deinit():
@@ -171,7 +183,8 @@ class Timer(): ...
         pass
 
 
-class TouchPad(): ...
+class TouchPad:
+    ''
     def config():
         pass
 
@@ -179,7 +192,8 @@ class TouchPad(): ...
         pass
 
 
-class UART(): ...
+class UART:
+    ''
     def any():
         pass
 
@@ -201,9 +215,10 @@ class UART(): ...
     def write():
         pass
 
-ULP_WAKE = 6
+ULP_WAKE = 5
 
-class WDT(): ...
+class WDT:
+    ''
     def feed():
         pass
 
@@ -221,9 +236,6 @@ def freq():
     pass
 
 def idle():
-    pass
-
-def lightsleep():
     pass
 
 mem16 = None
