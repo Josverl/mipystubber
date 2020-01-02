@@ -10,7 +10,7 @@ import sys
 from utime import sleep_us
 from ujson import dumps
 
-stubber_version = '1.3.2'
+stubber_version = '1.3.3'
 # deal with firmware specific implementations.
 try:
     from machine import resetWDT #LoBo
@@ -20,11 +20,37 @@ except:
 
 class Stubber():
     "Generate stubs for modules in firmware"
-    def __init__(self, path: str = None, firmware_id: str = None):
+    def __init__(self, path: str = None, firmware_id: str = None, **kwargs):
         self._log = logging.getLogger('stubber')
         self._report = []
         self._fid = firmware_id
-        u = os.uname()
+        try:
+            # some micropython firmware lack os.uname function
+            os.uname()
+        except AttributeError:
+            self._log.info((
+                "System Information cannot be determined! "
+                "Using 'generic' attributes. To override this, "
+                "please pass additional kwargs: "
+                "[sysname, nodename, release, version, machine]\n"
+            ))
+            class UnameStub:
+                sysname = kwargs.pop('sysname', 'generic')
+                nodename = kwargs.pop('nodename', 'generic')
+                release = kwargs.pop('release', '0.0.0'),
+                version = kwargs.pop('version', '0.0.0'),
+                machine = kwargs.pop('machine', 'generic')
+
+                def __repr__(self):
+                    _attrs = ['sysname', 'nodename',
+                              'release', 'version', 'machine']
+                    attrs = ["{}={}".format(a, getattr(self, a))
+                             for a in _attrs]
+                    return "{}".format(", ".join(attrs))
+            # monkeypatch uname to allow stub creation to take place
+            os.uname = UnameStub
+        finally:
+            u = os.uname()
         # use sys.implementation for consistency
         v = ".".join([str(i) for i in sys.implementation.version])
         self._report_fwi = {'firmware': {'sysname': u.sysname, 'nodename': u.nodename, 'release': u.release, 'version': v, 'machine': u.machine, 'firmware': self.firmware_ID()}}
@@ -51,15 +77,15 @@ class Stubber():
         self.excluded = ["webrepl", "_webrepl", "webrepl_setup"]
         # there is no option to discover modules from upython, need to hardcode
         # below contains combined modules from  Micropython ESP8622, ESP32, Loboris and pycom
-        self.modules = ['_thread', 'ak8963', 'apa102', 'apa106', 'array', 'binascii', 'btree', 'builtins', 'cmath', 'collections', 
-            'crypto', 'curl', 'dht', 'display', 'ds18x20', 'errno', 'esp', 'esp32', 'flashbdev', 'framebuf', 'freesans20', 
-            'functools', 'gc', 'gsm', 'hashlib', 'heapq', 'inisetup', 'io', 'json', 'logging', 'lwip', 'machine', 'math', 
-            'microWebSocket', 'microWebSrv', 'microWebTemplate', 'micropython', 'mpu6500', 'mpu9250', 'neopixel', 'network', 
-            'ntptime', 'onewire', 'os', 'port_diag', 'pycom', 'pye', 'random', 're', 'requests', 'select', 'socket', 'ssd1306', 
-            'ssh', 'ssl', 'struct', 'sys', 'time', 'tpcalib', 'uasyncio/core', 'ubinascii', 'ucollections', 'ucryptolib', 'uctypes', 
-            'uerrno', 'uhashlib', 'uheapq', 'uio', 'ujson', 'umqtt/robust', 'umqtt/simple', 'uos', 'upip', 'upip_utarfile', 'urandom', 
-            'ure', 'urequests', 'urllib/urequest', 'uselect', 'usocket', 'ussl', 'ustruct', 'utime', 'utimeq', 'uwebsocket', 'uzlib', 
-            'websocket', 'websocket_helper', 'writer', 'ymodem', 'zlib']
+        self.modules = ['_thread', 'ak8963', 'apa102', 'apa106', 'array', 'binascii', 'btree', 'builtins', 'cmath', 'collections',
+                        'crypto', 'curl', 'dht', 'display', 'ds18x20', 'errno', 'esp', 'esp32', 'flashbdev', 'framebuf', 'freesans20',
+                        'functools', 'gc', 'gsm', 'hashlib', 'heapq', 'inisetup', 'io', 'json', 'logging', 'lwip', 'machine', 'math',
+                        'microWebSocket', 'microWebSrv', 'microWebTemplate', 'micropython', 'mpu6500', 'mpu9250', 'neopixel', 'network',
+                        'ntptime', 'onewire', 'os', 'port_diag', 'pycom', 'pye', 'random', 're', 'requests', 'select', 'socket', 'ssd1306',
+                        'ssh', 'ssl', 'struct', 'sys', 'time', 'tpcalib', 'uasyncio/core', 'ubinascii', 'ucollections', 'ucryptolib', 'uctypes',
+                        'uerrno', 'uhashlib', 'uheapq', 'uio', 'ujson', 'umqtt/robust', 'umqtt/simple', 'uos', 'upip', 'upip_utarfile', 'urandom',
+                        'ure', 'urequests', 'urllib/urequest', 'uselect', 'usocket', 'ussl', 'ustruct', 'utime', 'utimeq', 'uwebsocket', 'uzlib',
+                        'websocket', 'websocket_helper', 'writer', 'ymodem', 'zlib', 'pycom', 'crypto']
 
         #try to avoid running out of memory with nested mods
         self.include_nested = gc.mem_free() > 3200

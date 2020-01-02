@@ -1,18 +1,7 @@
 [MASTER]
-# 1) MicropythonCore 1_10_0 * Micropython ESP 32
-# init-hook='import sys; sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\core_1_10_0");sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0");sys.path.insert(1,"./lib")'
-
-##############################
-# ACTIVE 
-##############################
-# 2) LoBo ESP 32 3.2.24 + Lobo_frozen 
-init-hook='import sys; sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24");sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_Frozen"); sys.path.insert(1,"./lib")'
-
-# 3) Makes no Sense Core 1.10.0 + LoBo ESP 32 3.2.24
-# init-hook='import sys; sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\core_1_10_0");sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24");sys.path.insert(1,"./lib")'
-
-# 4) Only stubs dev 
-# init-hook='import sys; sys.path.insert(1,"C:\\develop\\MyPython\\Stubber\\stubs\\dev");sys.path.insert(1,"./lib")'
+# Loaded Stubs:  esp32-micropython-1.11.0 
+init-hook='import sys;sys.path[1:1] = ["lib", ".micropy/cpython-core", ".micropy/BradenM-micropy-stubs-7a7d171/frozen", ".micropy/BradenM-micropy-stubs-452a204/frozen", ".micropy/BradenM-micropy-stubs-7a7d171/stubs",".micropy/thermo"]'
+# Note : also add these paths to: VSCode Preferences > Workspace > python.autoComplete.extraPaths
 
 
 [MESSAGES CONTROL]

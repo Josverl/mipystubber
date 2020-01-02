@@ -1,0 +1,11 @@
+micropython-cpython-micropython
+micropython-cpython-ujson
+micropython-cpython-uhashlib
+micropython-cpython-utarfile
+micropython-cpython-uos
+micropython-cpython-uio
+micropython-cpython-uctypes
+micropython-cpython-uasyncio
+micropython-cpython-utime
+micropython-cpython-usocket
+micropython-cpython-uzlib

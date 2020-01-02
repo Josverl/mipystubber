@@ -1,7 +1,7 @@
 """
 Module: 'machine' on esp32 1.11.0
 """
-# MCU: (sysname='esp32', nodename='esp32', release='1.11.0', version='v1.11-633-gb310930db on 2019-12-11', machine='ESP32 module (spiram) with ESP32')
+# MCU: (sysname='esp32', nodename='esp32', release='1.11.0', version='v1.11 on 2019-05-29', machine='ESP32 module with ESP32')
 # Stubber: 1.3.2
 
 class ADC:
@@ -18,9 +18,6 @@ class ADC:
         pass
 
     def read():
-        pass
-
-    def read_u16():
         pass
 
     def width():
@@ -136,24 +133,6 @@ class RTC:
     def memory():
         pass
 
-
-class SDCard:
-    ''
-    def deinit():
-        pass
-
-    def info():
-        pass
-
-    def ioctl():
-        pass
-
-    def readblocks():
-        pass
-
-    def writeblocks():
-        pass
-
 SLEEP = 2
 SOFT_RESET = 5
 
@@ -219,10 +198,6 @@ class TouchPad:
 
 class UART:
     ''
-    INV_CTS = 1048576
-    INV_RTS = 8388608
-    INV_RX = 524288
-    INV_TX = 4194304
     def any():
         pass
 

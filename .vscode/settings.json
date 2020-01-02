@@ -1,34 +1,25 @@
 {
-    "python.pythonPath": ".env\\Scripts\\python.exe",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
-    "python.autoComplete.extraPaths": [
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen",
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
-        //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
+    // "python.autoComplete.extraPaths": [
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen",
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
+    //     //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
 
-    ],
-    "python.autoComplete.typeshedPaths": [
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen",
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
-        //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
+    // ],
+    // "python.autoComplete.typeshedPaths": [
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen",
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
+    //     //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
 
-    ],
-    "python.analysis.typeshedPaths": [
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen\\3",
-        "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
-        //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
+    // ],
+    // "python.analysis.typeshedPaths": [
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24_Frozen\\3",
+    //     "C:\\develop\\MyPython\\Stubber\\stubs\\esp32_LoBo_3_2_24",
+    //     //"C:\\develop\\MyPython\\Stubber\\stubs\\esp32_1_10_0"
 
-    ],
+    // ],
 
-     "cSpell.words": [
-        "Loboris",
-        "asfile",
-        "nodename",
-        "sysname",
-        "uname",
-        "upython",
-        "ustruct",
-        "webrepl"
-    ]
+
+    "python.pythonPath": "C:\\Users\\josverl\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe"
 }

@@ -1,0 +1,54 @@
+From c1c0d5ad105c0f1941e36bbd1c966b8760abd76d Mon Sep 17 00:00:00 2001
+From: Braden Mars <BradenM@users.noreply.github.com>
+Date: Wed, 17 Jul 2019 01:25:20 -0500
+Subject: [PATCH] feat(patch): ESP8266 No SPIRam Patch
+
+---
+ createstubs.py | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/createstubs.py b/createstubs.py
+index ad71c8f..a9b73c1 100644
+--- a/createstubs.py
++++ b/createstubs.py
+@@ -46,8 +46,8 @@ class Stubber():
+             self.ensure_folder(path + "/")
+         except:
+             self._log.error("error creating stub folder {}".format(path))
+-        self.problematic = ["upysh", "webrepl_setup", "http_client", "http_client_ssl", "http_server", "http_server_ssl"]
+-        self.excluded = ["webrepl", "_webrepl", "webrepl_setup"]
++        self.problematic = ["upysh", "webrepl", "_webrepl", "webrepl_setup", "http_client", "http_client_ssl", "http_server", "http_server_ssl"]
++        self.excluded = [ "port_diag","example_sub_led.py","example_pub_button.py"]
+         # there is no option to discover modules from upython, need to hardcode
+         # below contains the combines modules from  Micropython ESP8622, ESP32 and Loboris Modules
+         self.modules = ['_boot', '_onewire', '_thread', '_webrepl', 'ak8963', 'apa102', 'apa106', 'array', 'binascii', 'btree', 'builtins', 'upip', #do upip early
+@@ -94,9 +94,9 @@ class Stubber():
+             if self.include_nested:
+                 self.include_nested = gc.mem_free() > 3200
+ 
+-            if module_name.startswith("_") and module_name != '_thread':
+-                self._log.warning("Skip module: {:<20}        : internal ".format(module_name))
+-                continue
++            # if module_name.startswith("_") and module_name != '_thread':
++            #     self._log.warning("Skip module: {:<20}        : internal ".format(module_name))
++            #     continue
+             if module_name in self.problematic:
+                 self._log.warning("Skip module: {:<20}        : Known problematic".format(module_name))
+                 continue
+@@ -122,13 +122,10 @@ class Stubber():
+ 
+     def create_module_stub(self, module_name: str, file_name: str = None):
+         "Create a Stub of a single python module"
+-        if module_name.startswith("_") and module_name != '_thread':
+-            self._log.warning("SKIPPING internal module:{}".format(module_name))
+-            return
+ 
+-        if module_name in self.problematic:
+-            self._log.warning("SKIPPING problematic module:{}".format(module_name))
+-            return
++        if file_name is None: 
++            file_name = module_name.replace('.', '/') + ".py"
++
+         if '/' in module_name:
+             #for nested modules
+             self.ensure_folder(file_name)

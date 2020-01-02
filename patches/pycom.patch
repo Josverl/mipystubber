@@ -1,0 +1,22 @@
+From 7566ae4a317e4228ef0e9f333965d0225bb76c5a Mon Sep 17 00:00:00 2001
+From: Braden Mars <BradenM@users.noreply.github.com>
+Date: Fri, 26 Jul 2019 00:27:48 -0500
+Subject: [PATCH] feat(patch): PyCom Modules Patch
+
+---
+ createstubs.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/createstubs.py b/createstubs.py
+index ad71c8f..d848891 100644
+--- a/createstubs.py
++++ b/createstubs.py
+@@ -58,7 +58,7 @@ class Stubber():
+                         'select', 'socket', 'socketupip', 'ssd1306', 'ssh', 'ssl', 'struct', 'sys', 'time', 'tpcalib', 'uasyncio', 'uasyncio/core', 'ubinascii',
+                         'ucollections', 'ucryptolib', 'uctypes', 'uerrno', 'uhashlib', 'uheapq', 'uio', 'ujson', 'umqtt/robust', 'umqtt/simple', 'uos', 'upip_utarfile',
+                         'upysh', 'urandom', 'ure', 'urequests', 'urllib/urequest', 'uselect', 'usocket', 'ussl', 'ustruct', 'utime', 'utimeq', 'uwebsocket', 'uzlib', 'webrepl',
+-                        'webrepl_setup', 'websocket', 'websocket_helper', 'writer', 'ymodem', 'zlib']
++                        'webrepl_setup', 'websocket', 'websocket_helper', 'writer', 'ymodem', 'zlib', 'pycom', 'crypto']
+ 
+         #try to avoid running out of memory with nested mods
+         self.include_nested = gc.mem_free() > 3200

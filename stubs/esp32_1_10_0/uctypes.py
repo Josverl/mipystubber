@@ -1,4 +1,8 @@
-"Module 'uctypes' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'uctypes' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 ARRAY = -1073741824
 BFINT16 = -671088640
 BFINT32 = -402653184
@@ -44,4 +48,5 @@ def sizeof():
     pass
 
 
-class struct(): ...
+class struct:
+    ''

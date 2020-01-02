@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# micropython-stubber pre-commit hook
+
+# Patch Branches
+PATCHES=`git for-each-ref refs/heads/patch --format='%(refname)' | cut -d/ -f3-`
+## Remove current branch (in the case of making a patch branch)
+CUR_BRANCH=`git branch --show-current`
+PATCHES=( ${PATCHES[@]/$CUR_BRANCH} )
+
+# Update Patches
+ROOT=`git rev-parse --show-toplevel`
+SCRIPT="$ROOT/createstubs.py"
+
+# Make Patches
+for patch in "${PATCHES[@]}"; do
+	NAME=`echo $patch | cut -c 7-`
+	OUT="$ROOT/patches/$NAME.patch"
+	git format-patch -1 "$patch" "$SCRIPT" --no-signature --stdout > "$OUT"
+	# Stage
+	git add "$OUT"
+done
+
+

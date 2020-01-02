@@ -1,4 +1,8 @@
-"Module 'network' on firmware 'v1.10-247-g0fb15fc3f on 2019-03-29'"
+"""
+Module: 'network' on esp32 1.10.0
+"""
+# MCU: (sysname='esp32', nodename='esp32', release='1.10.0', version='v1.10 on 2019-01-25', machine='ESP32 module with ESP32')
+# Stubber: 1.3.2
 AP_IF = 1
 AUTH_MAX = 6
 AUTH_OPEN = 0
@@ -6,9 +10,6 @@ AUTH_WEP = 1
 AUTH_WPA2_PSK = 3
 AUTH_WPA_PSK = 2
 AUTH_WPA_WPA2_PSK = 4
-ETH_CLOCK_GPIO0_IN = 0
-ETH_CLOCK_GPIO16_OUT = 2
-ETH_CLOCK_GPIO17_OUT = 3
 def LAN():
     pass
 

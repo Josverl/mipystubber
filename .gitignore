@@ -1,12 +1,11 @@
-.vscode/.ropeproject/
+.vscode/
 project.pymakr
 downloaded/*
 *.zip
 
-downloadedstubs/
-
-#Ignore virtual environment
+# no python virtual environment
 .env/*
+# no compiled python 
 **/__pycache__/**
 
 #ignore the scratchpad 
@@ -14,9 +13,7 @@ scratch/*
 MCU/*
 
 M5Stack
-# !M5Stack/stubs
-# M5Stack/apps
-# M5Stack/blocks
-# M5Stack/im*
-# M5Stack/emo*
-# M5Stack/res*
+
+# ignore stubs 
+# stubs
+stubs/M5*
