@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """
-Collect modules and python stubs from MicroPython source projects
+Collect modules and python stubs from MicroPython source projects (v1.12 +)
 """
 # Copyright (c) 2020 Jos Verlinde
 # MIT license
 # some functions used from makemanifest.py,
 #   part of the MicroPython project, http://micropython.org/
 #   Copyright (c) 2019 Damien P. George
+
+# locating frozen modules : 
+# tested on MicroPython v1.12 
+# - 1.12 - using manifests.py, possible also include content of /port/modules folder ?
+# - 1.11 and older - include content of /port/modules folder if it exists
+
 
 import glob
 import os
@@ -55,32 +61,35 @@ def freeze(path, script=None, opt=0):
     path = convert_path(path)
     if script is None:
         #folder of scripts.
-        for s in os.listdir(path):
-            freezedry(path, s)
+        # for s in os.listdir(path):
+        #     freezedry(path, s)
 
-        # for dirpath, dirnames, filenames in os.walk(path, followlinks=True):
-        #     for f in filenames:
-        #         freeze_internal(kind, path, (dirpath + '/' + f)[len(path) + 1:], opt)
+        for dirpath, dirnames, filenames in os.walk(path, followlinks=True):
+            for script in filenames:
+                # can recurse folder, so add relative path to script.
+                freezedry(path, (dirpath + '/' + script)[len(path) + 1:])
+                # freeze_internal(kind, path, (dirpath + '/' + f)[len(path) + 1:], opt)
     elif not isinstance(script, str):
         # several specific scripts.
-        for s in script:
-            freezedry(path, s)
+        for script in script:
+            freezedry(path, script)
     else:
-        # on specific script.
+        # on specific script, may include a path: 'umqtt/simple.py'
         freezedry(path, script)
-
+        
 # called by freeze.
-def freezedry(path, script, dirpath=None):
-    "copy the to-be-frozen module to the desination folder to be stubbed"
-    script_path = os.path.join( path, script)
+def freezedry(path, script):
+    "copy the to-be-frozen module to the destination folder to be stubbed"
+    script_path = os.path.join(path, script)
+
     if stub_dir:
         print("freezedry : {:<20} to {}".format(script, stub_dir))
-        # ensure folder
-        if not os.path.exists(stub_dir):
-            os.makedirs(stub_dir, exist_ok=True)
+        dest_path = os.path.dirname(os.path.join(stub_dir, script))
+        # ensure folder, including possible path prefic for script todo:
+        os.makedirs(dest_path, exist_ok=True)
         # copy file
         try:
-            shutil.copy2(script_path, stub_dir)
+            shutil.copy2(script_path, dest_path)
         except OSError as e:
             print(e)
     else:
@@ -188,7 +197,7 @@ def get_frozen(stub_path, mpy_path=None, lib_path=None):
 if __name__ == "__main__":
     # MicroPython
     # todo: checkout micropython @ tag
-    get_frozen(stub_path='./stubs/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
+    get_frozen(stub_path='./scratch/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
 
     # PyCopy / LoBo - do not use manifests
     # modules are in directly in the PORT/modules folder
