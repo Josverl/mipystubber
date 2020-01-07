@@ -10,6 +10,7 @@ import os
 import shutil
 import subprocess
 
+import basicgit as git
 import freezer_mpy
 import freezer_lobo
 
@@ -31,7 +32,7 @@ def make_stub_files(stub_path, levels: int = 1):
         level = level + '/**'
 
 
-def get_frozen_pyb():
+def get_frozen_pyb(stub_path):
     # pyboard custom stub is included and does not need to be downloaded.
     stub_path = './stubs/pyb_common'
     ## modules = ['pyb.py']
@@ -64,21 +65,32 @@ def get_cpython(requirements, stub_path=None):
         shutil.rmtree(build_path, ignore_errors=True)
 
 
+def flat_version(version: str):
+    "Turn 'v1.2.3' into '1_2_3' "
+    return version.replace('v', '').replace('.', '_')
+
+
 def do_all():
     #todo: checkout/check specific version of micropython
-    freezer_mpy.get_frozen(stub_path='./stubs/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
+    mpy_path = '../micropython'
+    version = git.get_tag(mpy_path)
+    if version:
+        stub_path = './stubs/mpy_{}_frozen'.format(flat_version(version))
+        freezer_mpy.get_frozen(stub_path, mpy_path, lib_path='../micropython-lib')
+        make_stub_files(stub_path, levels=7)
 
-    get_cpython(stub_path='./stubs/cpython-core', requirements='./src/micro-cpython.txt')
 
-    # get_frozen_pyb()
+    # get_cpython(stub_path='./stubs/cpython-core', requirements='./src/micro-cpython.txt')
 
-    freezer_lobo.get_frozen(stub_path='./stubs/esp32_LoBo_3_2_24_Frozen')
+    # # get_frozen_pyb()
 
-    # now generate typeshed files for all scripts
-    make_stub_files('./stubs', levels=7)
+    # freezer_lobo.get_frozen(stub_path='./stubs/esp32_LoBo_3_2_24_Frozen')
+
+    # # now generate typeshed files for all scripts
+    # make_stub_files('./stubs', levels=7)
 
 
 
 if __name__ == "__main__":
-    # do_all()
-    get_cpython(stub_path='./stubs/cpython-core', requirements='./src/micro-cpython.txt')
+    do_all()
+    # get_cpython(stub_path='./stubs/cpython-core', requirements='./src/micro-cpython.txt')

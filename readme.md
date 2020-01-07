@@ -10,7 +10,13 @@ Not that the above is not limited to VSCode and Pylint, but it happens to be the
 Please feel free to suggest and add other combinations and the relevant steps to configure these. 
 
 The (stretch) goal is to create a vscode add-in to simplify the configuration, and allow easy switching between different firmwares and versions.
-For now you will need to configure this by hand as shown in the below section.
+For now you will need to use the `microcli` tool, or configure this by hand as shown in the below sections.
+
+## 'micropy' A command line tool for managing MicroPython projects with VSCode
+If you want a command line interface to setup a new project and configure the settings as described above for you then take a look at :  
+    https://github.com/BradenM/micropy-cli
+    `pip install micropy-cl`
+    then run `micropy init`
 
 ## File Structure 
 The file structure is based on my personal windows environment, but you should be able to adapt that without much hardship to you own preference and OS.
@@ -35,7 +41,6 @@ For simplicity in documentation I have configured most settings at workspace pro
 The same settings could be configured at User level, where they would become defaults for all your projects, and can be overridden per workspace/project.
 
 #### Relevant VSCode settings
-
 Setting | Default   | Description  | ref  
 --------|-----------|--------------|--- 
 python.autoComplete.|||[Autocomplete Settings](https://code.visualstudio.com/docs/python/settings-reference#_autocomplete-settings)
@@ -123,6 +128,8 @@ disable = missing-docstring, line-too-long, trailing-newlines, broad-except, log
 
 ```
 
+
+
 ## Downloading the Stubs from GIThub 
 
 This is not complete at this point.
@@ -156,7 +163,7 @@ The recommendation is to keep the firmware id short, and add a version as in the
 def main():
     stubber = Stubber(firmware_id='HoverBot v1.2.1')
     # Add specific additional modules to be stubbed
-    stubber.add_modules(['hover'])
+    stubber.add_modules(['hover','rudder'])
 
 ```
 after this , upload the file and import it to generate the stubs using your custom name.
@@ -165,12 +172,12 @@ after this , upload the file and import it to generate the stubs using your cust
 
 After this is completed, you will need to download the generated stubs from the micropython board, and save them on a folder on your computer. 
 if you work with multiple firmwares or versions it is recommended to use a folder name combining the firmware name and version
-- \stubs
-    - \ESP32_LoBo_v3_1_20
-    - \ESP32_LoBo_v3_2_24
-    - \ESP32_LoBo_v3_2_24_Frozen
-    - \ESP32_1_10_0
-    - \ESP32_1_10_0_Frozen
+- /stubs
+    - /ESP32_LoBo_v3_1_20
+    - /ESP32_LoBo_v3_2_24
+    - /ESP32_LoBo_v3_2_24_Frozen
+    - /ESP32_1_10_0
+    - /ESP32_1_10_0_Frozen
 
 Note: I found, that you need to be mindful of the maximum path and filename limitations on the filesystem if you use IFSS.
 
@@ -179,9 +186,20 @@ It is common for Firmwares to include a few (or many) modules as 'frozen' module
 
 Most OSS firmwares store these frozen modules as part of their repository, which allows us to: 
 1. Download the *.py from the (github) repo using `git clone` or a direct download 
-2. extract and store the 'unfrozen' modules (ie the *.py files)  in a <Firmware>_Frozen folder
+2. Extract and store the 'unfrozen' modules (ie the *.py files) in a <Firmware>_Frozen folder.
+   if there are different port / boards or releses defined , there may be multiple folders such as: 
+   mstubs/mpy_1_12_frozen
+            /esp32
+                /GENERIC
+                /RELEASE
+                /TINYPICO
+            /stm32
+                /GENERIC
+                /PYBD_SF2
+            
 3. generate typeshed stubs of these files. (the .pyi files will be stored alongside the .py files)
-4. Include them in the configuration 
+4. Include/use them in the configuration 
+
 
 
 ref: https://learn.adafruit.com/micropython-basics-loading-modules/frozen-modules
@@ -211,13 +229,6 @@ ref: https://learn.adafruit.com/micropython-basics-loading-modules/frozen-module
 
 ### Module Duplication 
 Due to the naming convention in micropython some modules will be duplicated , ie `uos` and `os` will both be included 
-
-
-## 'micropy' A command line tool for managing MicroPython projects with VSCode
-If you want a command line interface to setup a new project and configure the settings as described above for you then take a look at :  
-    https://github.com/BradenM/micropy-cli
-    `pip install micropy-cl`
-    then run `micropy init`
 
 
 
@@ -267,6 +278,8 @@ https://github.com/dastultz/micropython-pyb
 
 ## Related 
 
+[Type hints cheat sheet](https://github.com/python/mypy/blob/master/docs/source/cheat_sheet_py3.rst#type-hints-cheat-sheet-python-3)
+
 ### References
 PEP 3107 -- Function Annotations
 https://www.python.org/dev/peps/pep-3107/
@@ -276,6 +289,10 @@ https://www.python.org/dev/peps/pep-0484/
 
 ### Stub generators
 https://stackoverflow.com/questions/35602541/create-pyi-files-automatically
+
+
+### Mypy
+[Optional Static Typing for Python](https://github.com/python/mypy#mypy-optional-static-typing-for-python)
 
 ### Typeshed 
 https://github.com/python/typeshed/
