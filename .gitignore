@@ -17,3 +17,7 @@ M5Stack
 # ignore stubs 
 # stubs
 stubs/M5*
+
+# ignore test coverage report
+.coverage
+htmlcov
