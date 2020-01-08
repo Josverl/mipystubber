@@ -2,6 +2,7 @@
 [run]
 branch = True
 omit =
+    
     # no stubs in coverage
     stubs
     # exclude tests from cov 
@@ -10,6 +11,8 @@ omit =
     # exclude external files 
     src/make_stub_files.py
     src/micropip.py
+    
+    src/firmwares.py
 
 [report]
 # Regexes for lines to exclude from consideration
