@@ -21,3 +21,4 @@ stubs/M5*
 # ignore test coverage report
 .coverage
 htmlcov
+coverage_html_report
