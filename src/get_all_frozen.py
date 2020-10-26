@@ -43,8 +43,8 @@ def get_all():
     else:
         log.warning('Unable to find the micropython repo in folder : {}'.format(mpy_path))
 
-    # todo add eralier version(s) tags have been removed ...
-    get_lobo.get_frozen(stub_path=STUB_FOLDER + '/esp32_LoBo_3_2_24_Frozen')
+    # todo add earlier version(s), but tags have been removed ...
+    get_lobo.get_frozen(stub_path=STUB_FOLDER + '/esp32_LoBo_3_2_24_frozen')
 
     # now generate typeshed files for all scripts
     log.info("Generate type hint files (pyi) in folder: {}".format(STUB_FOLDER))

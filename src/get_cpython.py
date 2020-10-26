@@ -14,7 +14,7 @@ family = 'common'
 def get_core(requirements, stub_path=None):
     "Download MicroPython compatibility modules"
     if not stub_path:
-        stub_path = './all-stubs/cpython-core'
+        stub_path = './all-stubs/cpython_core'
 
     # use pip to dowload requirements file to build folder in one go
     #   pip install --no-compile --no-cache-dir --target ./scratch/test --upgrade -r ./src/micropython.txt

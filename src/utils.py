@@ -15,9 +15,9 @@ def clean_version(version:str, build:bool = False):
     if len(nibbles) == 1:
         return version
     elif build:
-        return '-'.join(version.split('-')[0:-1])
+        return '-'.join(version.split('_')[0:-1])
     else:
-        return '-'.join((version.split('-')[0], 'nightly'))
+        return '-'.join((version.split('_')[0], 'x')) # use shorter paths
 
 def stubfolder(path:str)->str:
     "return path in the stub folder"

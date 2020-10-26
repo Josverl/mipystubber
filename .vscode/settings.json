@@ -4,21 +4,30 @@
     "python.linting.pylintArgs": [
         "--rcfile", "${workspaceFolder}/.pylintrc-cpython"
     ],
-    "python.autoComplete.extraPaths": [
+    "python.languageServer": "Pylance",
+    // pylance
+    "python.analysis.extraPaths": [
         "board/lib", 
-        "all-stubs/cpython-core", 
-        "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC",
-        "all-stubs/esp32_1_13_0-103"
-    ],
-    "python.autoComplete.typeshedPaths": [
-        "board/lib", 
-        "all-stubs/cpython-core", 
+        "all-stubs/cpython_core", 
         "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC",
         "all-stubs/esp32_1_13_0-103"
     ],
     "python.analysis.typeshedPaths": [
         "board/lib", 
-        "all-stubs/cpython-core", 
+        "all-stubs/cpython_core", 
+        "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC",
+        "all-stubs/esp32_1_13_0-103"
+    ],
+    // python language server (depricated) 
+    "python.autoComplete.extraPaths": [
+        "board/lib", 
+        "all-stubs/cpython_core", 
+        "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC",
+        "all-stubs/esp32_1_13_0-103"
+    ],
+    "python.autoComplete.typeshedPaths": [
+        "board/lib", 
+        "all-stubs/cpython_core", 
         "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC",
         "all-stubs/esp32_1_13_0-103"
     ],
@@ -29,6 +38,7 @@
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
+
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#914b09",
         "activityBar.activeBorder": "#0bb45d",
@@ -46,5 +56,4 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#613206",
-
 }

@@ -12,7 +12,7 @@ Collect modules and python stubs from MicroPython source projects (v1.12 +)
 
 # locating frozen modules :
 # tested on MicroPython v1.12 - v1.13
-# - 1.13 - using manifests.py, and support for variant
+# - 1.13 - using manifests.py, and (limited) support for variant
 # - 1.12 - using manifests.py, possible also include content of /port/modules folder ?
 # - 1.11 and older - include content of /port/modules folder if it exists
 
@@ -337,25 +337,31 @@ def get_frozen_manifest(manifests, stub_path: str, mpy_path: str, lib_path: str,
 
         # set global for later use - must be an absolute path.
         stub_dir = os.path.abspath(os.path.join(stub_path, port_name, board_name))
+        #force to lowercase
+        stub_dir = stub_dir.lower()
 
         try:
             include(manifest)
         except FreezeError as er:
             log.error('freeze error executing "{}": {}'.format(manifest, er.args[0]))
 
-        # make a module manifest 
+        # make a module manifest
         utils.make_manifest(stub_dir, family, fmly, version)
 
 
 
-if __name__ == "__main__":
-    # just run a quick test    
+def _test():
+    # just run a quick test
     logging.basicConfig(format='%(levelname)-8s:%(message)s',level=logging.INFO)
     # MicroPython
     # todo: checkout micropython @ tag
     # get_frozen(stub_path='./scratch/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
-    # get_frozen_folders(stub_path='./scratch/mpy_1_13_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib')
+    # get_frozen_folders(stub_path='./scratch/mpy_1_13_0_frozen', mpy_path='../micropython', lib_path='../micropython-lib')
 
-    #get_frozen(stub_path='./scratch/mpy_1_13_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.13.0')
-    get_frozen(stub_path='./scratch/mpy_1_10_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.10.0')
+    get_frozen(stub_path='./scratch/mpy_1_13_0_frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.13.0')
+    #get_frozen(stub_path='./scratch/mpy_1_10_0_frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.10.0')
 
+
+
+if __name__ == "__main__":
+    _test()
