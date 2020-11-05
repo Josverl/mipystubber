@@ -8,7 +8,9 @@ pytest
 pytest-cov
 filelock
 Jinja2
-python-coveralls
 
 #uploader ...
-# codecov
+codecov
+
+# try 2 
+# python-coveralls

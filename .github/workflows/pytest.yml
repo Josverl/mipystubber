@@ -55,15 +55,6 @@ jobs:
     # - name: Pytest common tests
     #   run: |
     #     pytest tests/common tests/board
-    - name: run coveralls
-      run: |
-        coveralls
-
-    - name: Send to Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ always() }}
 
     - name: Upload pytest test results
       uses: actions/upload-artifact@v2
@@ -74,7 +65,19 @@ jobs:
       if: ${{ always() }}
 
 
-      
+
+    # does not work at all 
+    # - name: run coveralls
+    #   run: |
+    #     coveralls
+
+    # - name: Send to Coveralls
+    #   uses: coverallsapp/github-action@master
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #   if: ${{ always() }}
+
+
     # - name: Test with pytest
     #   run: pytest tests/common tests/board --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
 
