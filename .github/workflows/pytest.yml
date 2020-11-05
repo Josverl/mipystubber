@@ -55,8 +55,11 @@ jobs:
     # - name: Pytest common tests
     #   run: |
     #     pytest tests/common tests/board
+    - name: run coveralls
+      run: |
+        coveralls
 
-    - name: Coveralls
+    - name: Send to Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
