@@ -79,7 +79,7 @@ Note that for some modules (such as the  `gc`, `time`  and `sys` modules) this a
  These modules have been extracted from the source code. 
  4. **Firmware Stubs**. For all other modules that are included on the board, [micropython-stubber] or [micropy-cli] has been used to extract as much information as available, and provide that as stubs. While there is a lot of relevant and useful information for code completion, it does unfortunately not provide all details regarding parameters that the earlier  options may provide.
 
-## 1.2 Stub collection process 
+## 1.1 - Stub collection process 
 
 * The **CPython common stubs** are periodically collected from the [micropython-lib][] or the [pycopy-lib][].
 * The **Frozen stubs** are collected from the repos of [micropython][] + [micropython-lib][] and from the [loboris][] repo
@@ -89,7 +89,7 @@ Note that for some modules (such as the  `gc`, `time`  and `sys` modules) this a
 
 
 
-## 1.3 - Firmware Stubs format and limitations 
+## 1.2 - Firmware Stubs format and limitations 
 
 1. No function parameters are generated 
 2. No return types are generated 
@@ -97,7 +97,23 @@ Note that for some modules (such as the  `gc`, `time`  and `sys` modules) this a
 4. The stubs use the .py extension rather than .pyi (for autocomplete to work) 
 5. Due to the method of generation nested modules are included, rather than referenced. While this leads to somewhat larger stubs, this should not be limiting for using the stubs on a PC.  
 
+## 1.3 - Firmware naming convention 
 
+for stubfiles: {firmware}-{port}-{version}[-{build}]
+
+for frozen modules : {firmware}-{version}-frozen
+
+* Firmware: lowercase 
+  * micropython | loboris | pycopy | ...
+* port: lowercase , as reported by os.implementation.platform 
+  * esp32 | linux | win32 | esp32_lobo
+* version : digits only , dots replaced by underscore, follow version in documentation rather than semver 
+  * 1_13
+  * 1_9_4
+* build, only for nightly build, the buildnr extracted from the git tag 
+  * Nothing , for released versions
+  * 103 
+  * N ( short notation)
 
 
 ---------
@@ -556,6 +572,12 @@ see below overview
 | board         | createsubs.py<br />normal & minified               | runs createstubs.py on micropython-linux ports               | WSL2 and github actions |
 | checkout_repo | simple_git module<br />retrieval of frozen modules | does not use mocking but actually retrieves different firmware versions locally using git or dowNloads modules for online | local windows           |
 | common        | all other tests                                    | common                                                       | local + github action   |
+
+
+
+**Testing on linux port**
+
+in order to be able to test `createstubs.py`  it has been updated to run on linux, and accept a --path parameter to indicate tha pathe where the stubs should be stored.
 
 
 
