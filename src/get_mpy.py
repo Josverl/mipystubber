@@ -370,7 +370,7 @@ if __name__ == "__main__":
         # folder/{family}_{version}_frozen
         family = 'mpy'
         stub_path = stubfolder('{}_{}_frozen'.format(family, flat_version(version)))
-        get_frozen(stub_path, version=version, pyy_path=mpy_path, lib_path='../micropython-lib')
+        get_frozen(stub_path, version=version, mpy_path=mpy_path, lib_path='../micropython-lib')
         exit(0)
     else:
         log.warning('Unable to find the micropython repo in folder : {}'.format(mpy_path))
