@@ -24,7 +24,7 @@ A lot of subs have already been generated and are shared on github or other mean
 
 For now you will need to [configure this by hand](#manual-configuration), or use the [micropy cli` tool](#using-micropy-cli)
 
-1. The sister-repo MicroPython-stubs**][stubs-repo] contains all stubs I have collected with the help of others, and which can be used directly.
+1. The sister-repo MicroPython-stubs**][stubs-repo] contains [all stubs][all-stubs] I have collected with the help of others, and which can be used directly.
 That repo also contains examples configuration files that can be easily adopted to your setup.
 
 2. A second repo [micropy-stubs repo][stubs-repo2] maintained by BradenM,  also contains stubs but in a structure used and distributed by the [micropy-cli](#using-micropy-cli) tool.
@@ -49,10 +49,6 @@ MicroPython-Stubber is licensed under the MIT license, and all contributions sho
 
 
 -----------------------------
-
-
-
-
 
 # 1 - Approach to providing stub information
 
@@ -96,21 +92,24 @@ Note that for some modules (such as the  `gc`, `time`  and `sys` modules) this a
 3. Instances of imported classes have no type (due to 2)
 4. The stubs use the .py extension rather than .pyi (for autocomplete to work) 
 5. Due to the method of generation nested modules are included, rather than referenced. While this leads to somewhat larger stubs, this should not be limiting for using the stubs on a PC.  
+6. 
 
 ## 1.3 - Firmware naming convention 
 
-for stubfiles: {firmware}-{port}-{version}[-{build}]
+The firmware naming conventions is most relevant to provide clear folder names when selecting which stubs to use.
+
+for stubfiles: {**firmware**}-{port}-{version}[-{build}]
 
 for frozen modules : {firmware}-{version}-frozen
 
-* Firmware: lowercase 
+* ***firmware***: lowercase 
   * micropython | loboris | pycopy | ...
-* port: lowercase , as reported by os.implementation.platform 
+* ***port***: lowercase , as reported by os.implementation.platform 
   * esp32 | linux | win32 | esp32_lobo
-* version : digits only , dots replaced by underscore, follow version in documentation rather than semver 
+* ***version*** : digits only , dots replaced by underscore, follow version in documentation rather than semver 
   * 1_13
   * 1_9_4
-* build, only for nightly build, the buildnr extracted from the git tag 
+* ***build***, only for nightly build, the buildnr extracted from the git tag 
   * Nothing , for released versions
   * 103 
   * N ( short notation)
@@ -118,12 +117,15 @@ for frozen modules : {firmware}-{version}-frozen
 
 ---------
 # 2 - Using stubs
-### 2.1 - Manual configuration
+## 2.1 - Manual configuration
 
 the manual configuration, including sample configuration files is described in detail in the sister-repo [micropython-stubs][] section [using-the-stubs][]
 
+---------
+# 2 - Using stubs
+### 2.1 - Manual configuration
 
-### 2.2 - Using micropy-cli
+## 2.2 - Using micropy-cli
 
 'micropy-cli' is  command line tool for managing MicroPython projects with VSCode
 If you want a command line interface to setup a new project and configure the settings as described above for you, then take a look at : [micropy-cli]  
@@ -146,11 +148,16 @@ There is a newer implementation [Pylance] that has better speed and functionalit
 
 *To deliver an improved user experience, we’ve created Pylance as a brand-new language server based on Microsoft’s [Pyright](https://github.com/microsoft/pyright) static type checking tool. Pylance leverages type stubs ([.pyi files](https://www.python.org/dev/peps/pep-0561/)) and lazy type inferencing to provide a highly-performant development experience. Pylance supercharges your Python IntelliSense experience with rich type information, helping you write better code, faster. The Pylance extension is also shipped with a collection of type stubs for popular modules to provide fast and accurate auto-completions and type checking.*
 
+## 3.1 - Recommended order of the stubs in your config:  
 
+1. The src/libs folder(s)
+2. The CPython common modules 
+3. The frozen modules offer more information that can be used in code completion, and therefore should be loaded before the firmware stubs.
+4. The firmware stubs generated on or for your board
 
 [Announcing Pylance: Fast, feature-rich language support for Python in Visual Studio Code | Python (microsoft.com)](https://devblogs.microsoft.com/python/announcing-pylance-fast-feature-rich-language-support-for-python-in-visual-studio-code/)
 
-#### 3.1 - Relevant VSCode settings
+## 3.2 - Relevant VSCode settings
 
 Setting | Default   | Description  | ref  
 --------|-----------|--------------|--- 
@@ -160,7 +167,7 @@ python.linting. ||| [Linting Settings](https://code.visualstudio.com/docs/python
 enabled | true   | Specifies whether to enable linting in general.|
 pylintEnabled | true | Specifies whether to enable Pylint.|
 
-#### 3.1.1 - Microsoft Python Language Server settings  [MPLS]
+### 3.2.1 - Microsoft Python Language Server settings  [MPLS]
 
 
 The language server settings apply when python.jediEnabled is false.
@@ -173,7 +180,7 @@ typeshedPaths | [] | Paths to look for typeshed modules on GitHub.|
 
 *Our  long-term plan is to transition our Microsoft Python Language Server users over to Pylance and eventually deprecate and remove the old language server as a supported option*
 
-#### 3.1.1 - Pylance - pyright
+### 3.2.2 - Pylance - pyright
 
 The intent is to adjust the configuration to support Lancelot to work in the same way as MPLS, but this currently runs into some issues where pylance cannot resolve builtins and other symbols 
 
@@ -183,9 +190,7 @@ The intent is to adjust the configuration to support Lancelot to work in the sam
 | python.analysis.autoSearchPath | true      | Used to automatically add search paths based on some predefined names (like `src`). |
 | python.analysis.extraPaths     | []        | Used to specify extra search paths for import resolution. This replaces the old `python.autoComplete.extraPaths` setting. |
 
-
-
-references : 
+References : 
 
 [Pylance - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
 
@@ -197,15 +202,8 @@ possible testing / diag :
 
 
 
-### 3.1.2 - Recommended order of the stubs in your config:  
 
-1. The src/libs folder(s)
-2. The CPython common modules 
-3. The frozen modules offer more information that can be used in code completion, and therefore should be loaded before the firmware stubs.
-4. The firmware stubs generated on or for your board
-
-
-### 3.1.3 - Sample configuration VSCode settings
+### 3.2.3 - Sample configuration VSCode settings
 Note: the below settings include the paths to multiple folders, containing stubs for different firmware. 
 you can remove ( or //comment ) the lines of firmwares that you to not use.
 
@@ -249,7 +247,7 @@ If you notice problems :
 * If you prefer to use a backslash :  in JSON notation the `\` (backslash) MUST be escaped as `\\` (double backslash)
 * Remember to put the 'Frozen' module paths before the generated module paths. 
 
-### 3.2 - pylint 
+## 3.3 - pylint 
 
 Pylint needs 2 settings :
 1. Specify **init-hook** to inform pylint where the stubs are stored.
@@ -296,11 +294,11 @@ the script goes though the following stages
 
 Due to the module naming convention in micropython some modules will be duplicated , ie `uos` and `os` will both be included 
 
-## 4.1 - running the script
+## 4.1 - Running the script
 
-the createstubs.py script can either be run as a script or imported as a module depending on your preferences.
+The createstubs.py script can either be run as a script or imported as a module depending on your preferences.
 
-running as a script may be needed on the linux or win32 platforms in order to pass parameters to the script.
+Running as a script is used on the linux or win32 platforms in order to pass a --path parameter to the script.
 
 The steps are : 
 
@@ -314,7 +312,9 @@ The steps are :
 
 
 
+***Note:***  There is a memory allocation bug in MicroPython 1.30 that prevents createstubs.py to work.  this was fixed in nightly build v1.13-103 and newer.
 
+If you try to create stubs on this defective version, the stubber will raise *NotImplementedError*("MicroPyton 1.13.0 cannot be stubbed")
 
 ## 4.2 - Generating Stubs for a specific Firmware 
 
@@ -379,7 +379,27 @@ def main():
 
 after this , upload the file and import it to generate the stubs using your custom firmware id.
 
+## 4.5 - The Unstubbables 
 
+There are a limited number of modules that cannot be stubbed by createstubs.py for a number of different reasons. Some simply raise errors , others my reboot the MCU, or require a specific configuration or state before they are loaded.
+
+a few of the frozen modules are just included as a sample rather \t would not be very usefull to generate stubs for these
+
+the problematic category throw errors or lock up the stubbing process altogether: 
+
+```python 
+ self.problematic=["upysh","webrepl_setup","http_client","http_client_ssl","http_server","http_server_ssl"]
+```
+
+the excluded category provides no relevant stub information 
+
+``` python 
+ self.excluded=["webrepl","_webrepl","port_diag","example_sub_led.py","example_pub_button.py"]
+```
+
+`createsubs.py` will not process a module in either category.
+
+Note that some of these modules are in fact included in the frozen modules that are gathered for those ports or boards
 
 # 5 - CPython and Frozen modules 
 
@@ -482,12 +502,9 @@ The file structure is based on my personal windows environment, but you should b
 | Frozen stub files    | better code intellisense | stubs/{firmware}-{version}-frozen |
 
 
+Note: I found that, for me, using submodules caused more problems than it solved. So instead I link the two main repo's using a [symlink][].
 
-
-Note: I found that, for me, using submodules caused more problems than it solved. So instead I link the two repo's using a symlink.
-
-**< TODO: Check folder name>**  
-Note: I have used the folder `TESTREPO-micropython` to avoid conflicts with any development that you might be doing on the `micropython` repo at the potential cost of a little diskspace.
+***Note:*** I in the repo tests I have used the folders `TESTREPO-micropython`  and `TESTREPO-micropython-lib` to avoid conflicts with any development that you might be doing on similar `micropython` repos at the potential cost of a little diskspace.
 
 ``` powershell
 cd /develop 
@@ -497,10 +514,6 @@ git clone  https://github.com/josverl/micropython-stubs.git
 git clone  https://github.com/micropython/micropython.git 
 git clone  https://github.com/micropython/micropython.git 
 ```
-
-
-
-
 
 
 ## 6.4 - Create a symbolic link
@@ -583,8 +596,6 @@ in order to be able to test `createstubs.py`  it has been updated to run on linu
 
 ## 7.4 github actions
 
-
-
 ### pytests.yml 
 
 This workflow will :
@@ -594,8 +605,6 @@ This workflow will :
 - test the createstubs.py script on multiple micropython linux versions 
 
 - test the minified createstubs.py script on multiple micropython linux versions 
-
-
 
 ### run minify-pr.yml
 
@@ -611,7 +620,9 @@ This workflow will :
 
 # 8 - Stubs 
 
+Initially I also stored all the generated subs in the same repo. That turned out to be a bit of a hassle and since then I have moved [all the stubs][all-stubs] to the [micropython-stubs][] repo
 
+Below are the most relevant stub sources referenced in this project.
 
 ## 8.1 Firmware and libraries 
 
@@ -631,9 +642,6 @@ https://github.com/pfalcon/pycopy-lib
 
 https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo
 
-
-
-
 ## 8.2 - Included custom stubs 
 
 | Github repo                | Contributions                                                           | License |
@@ -642,6 +650,15 @@ https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo
 | dastultz/micropython-pyb   | a pyb.py file for use with IDEs in developing a project for the Pyboard | Apache 2|
 
 
+
+### Stub source: MicroPython-lib > CPython backports _[MIT, Python]_
+
+## 8.2 - Included custom stubs 
+
+| Github repo                | Contributions                                                           | License |
+|----------------------------|-------------------------------------------------------------------------|---------|
+| pfalcon/micropython-lib    | CPython backports                                            | MIT |
+| dastultz/micropython-pyb   | a pyb.py file for use with IDEs in developing a project for the Pyboard | Apache 2|
 
 ### Stub source: MicroPython-lib > CPython backports _[MIT, Python]_
 
@@ -685,7 +702,7 @@ The text of return expressions. Return expressions are the actual text of whatev
 
 [Type hints cheat sheet](https://github.com/python/mypy/blob/master/docs/source/cheat_sheet_py3.rst#type-hints-cheat-sheet-python-3)
 
-### 10.1 - References
+## 10.1 - References
 
 PEP 3107 -- Function Annotations
 https://www.python.org/dev/peps/pep-3107/
@@ -693,19 +710,19 @@ https://www.python.org/dev/peps/pep-3107/
 PEP 484 -- Type Hints
 https://www.python.org/dev/peps/pep-0484/
 
-### 10.2 - Stub generators
+## 10.2 - Stub generators
 
 https://stackoverflow.com/questions/35602541/create-pyi-files-automatically
 
-### 10.3 - Mypy
+## 10.3 - Mypy
 
 [Optional Static Typing for Python](https://github.com/python/mypy#mypy-optional-static-typing-for-python)
 
-### 10.4 - Typeshed 
+## 10.4 - Typeshed 
 
 https://github.com/python/typeshed/
 
-### 10.5 - stubgen , runs on host and extracts information from the source 
+## 10.5 - stubgen , runs on host and extracts information from the source 
 
 https://github.com/python/mypy/blob/master/mypy/stubgen.py
 
@@ -744,13 +761,18 @@ https://github.com/python/mypy/blob/master/mypy/stubgen.py
     <td align="center"><a href="https://github.com/MathijsNL"><img src="https://avatars0.githubusercontent.com/u/1612886?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MathijsNL</b></sub></a><br /><a href="https://github.com/Josverl/micropython-stubbber/issues?q=author%3AMathijsNL" title="Bug reports">🐛</a></td>
   </tr>
 </table>
-
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-------------------------------
+
+----------------------------
+
+--------------------------------
+
+
 
 [stubs-repo]:   https://github.com/Josverl/micropython-stubs
 [stubs-repo2]:  https://github.com/BradenM/micropy-stubs
@@ -761,11 +783,11 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [demo]:         docs/img/demo.gif	"demo of writing code using the stubs"
 [stub processing order]: docs/img/stuborder.png	"recommended stub processing order"
 [naming-convention]: #naming-convention-and-stub-folder-structure
-[firmwares]: https://github.com/Josverl/micropython-stubs/blob/master/firmwares.md
+[all-stubs]: https://github.com/Josverl/micropython-stubs/blob/master/firmwares.md
 [micropython]: https://github.com/micropython/micropython
 [micropython-lib]:  https://github.com/micropython/micropython-lib
 [pycopy]: https://github.com/pfalcon/pycopy
 [pycopy-lib]: https://github.com/pfalcon/pycopy-lib
 [createstubs-flow]: docs/img/createstubs-flow.png
-
+[symlink]: #6.4-create-a-symbolic-link
 

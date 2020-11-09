@@ -14,8 +14,6 @@ import pytest
 @pytest.mark.parametrize(
     "firmware", [ ('micropython_1_12')  ]
 )
-#TODO  get versions tht do not sugger from the memory alloc / segmentation fault 
-# ('micropython_1_13'), ('pycopy_3_3_2')
 
 def test_createstubs(firmware, tmp_path, script_folder):
     # run createsubs in the unix version of micropython
@@ -33,7 +31,10 @@ def test_createstubs(firmware, tmp_path, script_folder):
     stubfolder = Path(tmp_path)  / 'stubs'
     stubfiles = list(stubfolder.rglob('*.py'))
     # filecount 
-    assert (len(stubfiles) >= 45 ), "there should be 45 stubs or more"
+    if 'micropython' in script_folder:
+        assert (len(stubfiles) >= 45 ), "micropython: there should be 45 stubs or more"
+    else:
+        assert (len(stubfiles) >= 30 ), "pycopy: there should be 30 stubs or more"
 
     # manifest exists
     jsons = list(stubfolder.rglob('modules.json'))

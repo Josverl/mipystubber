@@ -65,7 +65,7 @@ jobs:
       with:
         title: '${{ steps.extract_branch.outputs.branch }} : update minified/createstubs.py'
         commit-message: add/update minified
-        branch: minify-${{ steps.extract_branch.outputs.branch }}
+        branch: ${{ steps.extract_branch.outputs.branch }}-minify
         labels: |
           automated pr
 

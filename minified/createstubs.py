@@ -23,7 +23,7 @@ class Stubber():
    pass
   self._report=[]
   self.info=self._info()
-  self._fwid=firmware_id or "{family}-{port}-{ver}".format(**self.info)
+  self._fwid=str(firmware_id).lower()or "{family}-{port}-{ver}".format(**self.info).lower()
   self._start_free=gc.mem_free()
   if path:
    if path.endswith('/'):

@@ -19,7 +19,6 @@ import get_lobo
 
 # todo: add frozen modules for : pycopy
 # import freezer_pycopy
-# import freezer_pycom - Avoid GPL License ?
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +41,7 @@ def get_all():
     else:
         log.warning('Unable to find the micropython repo in folder : {}'.format(mpy_path))
 
-    # todo add eralier version(s) tags have been removed ...
+    # todo add earlier version(s) tags have been removed ...
     get_lobo.get_frozen(stub_path=STUB_FOLDER + '/esp32_LoBo_3_2_24_Frozen')
 
     # now generate typeshed files for all scripts

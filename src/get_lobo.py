@@ -6,19 +6,24 @@ Collect modules and python stubs from the Loboris MicroPython source project
 # Copyright (c) 2020 Jos Verlinde
 # MIT license
 import logging
+from pathlib import Path
 import downloader
 import utils
 
-family = 'loboris'
+FAMILY = 'loboris'
 fmly = 'lobo'
+PORT = 'esp32_lobo'
+
 
 log = logging.getLogger(__name__)
 # log.setLevel(level=logging.DEBUG)
 
-def get_frozen(stub_path, *, repo=None, version = '3.2.24'):
+def get_frozen(stub_path=None, *, repo=None, version='3.2.24'):
     "Loboris frozen modules"
     if not stub_path:
-        stub_path = './stubs/esp32_lobo_frozen'
+        stub_path = Path('./all-stubs')  / "{}-{}-frozen".format(FAMILY, utils.flat_version(version) )
+    else:
+        stub_path = Path(stub_path)
 
     if not repo:
         repo = 'https://raw.githubusercontent.com/loboris/MicroPython_ESP32_psRAM_LoBo/master/MicroPython_BUILD/components/micropython/esp32/modules/{}'
@@ -28,9 +33,9 @@ def get_frozen(stub_path, *, repo=None, version = '3.2.24'):
     #download
     downloader.download_files(repo, frozen_modules, stub_path)
     # make a manifest 
-    utils.make_manifest(stub_path, family, "frozen", fmly, version=version)
+    utils.make_manifest(stub_path, FAMILY, "frozen", fmly, version=version)
+
 
 if __name__ == "__main__":
-    # just run a quick test
     logging.basicConfig(format='%(levelname)-8s:%(message)s',level=logging.INFO)
-    get_frozen(stub_path='./scratch/esp32_lobo_frozen', version='3.2.24')
+    get_frozen(version='3.2.24')
