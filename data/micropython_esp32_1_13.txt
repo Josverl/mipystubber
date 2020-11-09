@@ -1,0 +1,16 @@
+# >>> help('modules')
+__main__          framebuf          uasyncio/lock     urandom
+_boot             gc                uasyncio/stream   ure
+_onewire          inisetup          ubinascii         uselect
+_thread           machine           ubluetooth        usocket
+_uasyncio         math              ucollections      ussl
+_webrepl          micropython       ucryptolib        ustruct
+apa106            neopixel          uctypes           usys
+btree             network           uerrno            utime
+builtins          ntptime           uhashlib          utimeq
+cmath             onewire           uheapq            uwebsocket
+dht               uarray            uio               uzlib
+ds18x20           uasyncio/__init__ ujson             webrepl
+esp               uasyncio/core     uos               webrepl_setup
+esp32             uasyncio/event    upip              websocket_helper
+flashbdev         uasyncio/funcs    upip_utarfile

@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
 
         {
             "name": "Python: Current File",
@@ -12,6 +11,15 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Debug process --path",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${file}",
+            "args": ["--path","./temp"]
+            
         },
         {
             "name": "Python: Debug process minify",

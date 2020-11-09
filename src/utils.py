@@ -8,18 +8,18 @@ log = logging.getLogger(__name__)
 
 STUB_FOLDER = './all-stubs'
 
-def clean_version(version:str, build:bool = False):
+def clean_version(version: str, build: bool = False):
     "omit the commit hash from the git tag"
     # 'v1.13-103-gb137d064e' --> 'v1.13-103'
     nibbles = version.split('-')
     if len(nibbles) == 1:
         return version
-    elif build:
+    elif build and build != 'dirty':
         return '-'.join(version.split('-')[0:-1])
     else:
-        return '-'.join((version.split('-')[0], 'nightly'))
+        return '-'.join((version.split('-')[0], 'N'))
 
-def stubfolder(path:str)->str:
+def stubfolder(path: str)->str:
     "return path in the stub folder"
     return '{}/{}'.format(STUB_FOLDER,path)
 
@@ -38,22 +38,32 @@ def make_stub_files(stub_path, levels: int = 1):
         os.system(cmd)
         level = level + '/**'
 
-def manifest(machine:None,sysname=None,nodename=None,version=None,release=None,firmware=None) -> dict:
+def manifest(family=None, machine=None, port=None, platform=None, sysname=None, nodename=None, version=None, release=None, firmware=None) -> dict:
     "create a new empty manifest dict"
+    if  family is None:
+        family = 'micropython' #family
     if  machine is None:
-        machine = 'micropython' #family
-    if  sysname is None:
-        sysname = 'mpy'         # short
-    if  nodename is None:
-        nodename = sysname
+        machine = family       #family
+
+    if  port is None:
+        port = 'common'       #family
+    if  platform is None:
+        platform = port       #family
+
     if  version is None:
         version = '0.0.0'
+
+    if  nodename is None:
+        nodename = sysname
     if  release is None:
         release = version
     if  firmware is None:
-        firmware = sysname + ' ' + version
+        firmware = "{}-{}-{}".format(family, port, flat_version(version))
 
-    mod_manifest ={ "firmware": {
+    mod_manifest = {"firmware": {
+                        "family": family,
+                        "port": port,
+                        "platform": platform,
                         "machine": machine,
                         "firmware": firmware,
                         "nodename": nodename,
@@ -68,15 +78,14 @@ def manifest(machine:None,sysname=None,nodename=None,version=None,release=None,f
                 }
     return mod_manifest
 
-
-def make_manifest(folder:str, family:str, fmly:str, version:str)-> bool:
-    mod_manifest = manifest(machine=family, sysname=fmly, version=version)
+def make_manifest(folder: str, family: str, port: str, fmly: str, version: str)-> bool:
+    mod_manifest = manifest(family=family, port=port, sysname=fmly, version=version)
     try:
         for filename in glob.glob(os.path.join(folder, "*.py")):
             f_name, _ = os.path.splitext(os.path.basename(filename))
             mod_manifest['modules'].append({ "file": os.path.basename(filename), "module":f_name})
         #write the the module manifest
-        with open(os.path.join(folder,"modules.json"), "w") as outfile:
+        with open(os.path.join(folder, "modules.json"), "w") as outfile:
             json.dump(mod_manifest, outfile)
         return True
     except OSError:

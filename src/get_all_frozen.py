@@ -17,9 +17,8 @@ import get_cpython
 import get_mpy
 import get_lobo
 
-# todo: add frozen modules for :
+# todo: add frozen modules for : pycopy
 # import freezer_pycopy
-# import freezer_pycom
 
 log = logging.getLogger(__name__)
 
@@ -28,9 +27,8 @@ STUB_FOLDER = './all-stubs'
 def get_all():
     "get all frozen modules for the current version of micropython"
 
-    get_cpython.get_core(stub_path= stubfolder('cpython_core'), requirements='./src/reqs-cpython-mpy.txt')
+    get_cpython.get_core(stub_path=stubfolder('cpython_core'), requirements='./src/reqs-cpython-mpy.txt')
 
-    #todo: checkout/check specific version of micropython
     mpy_path = '../micropython'
     version = clean_version(git.get_tag(mpy_path))
 
@@ -38,12 +36,12 @@ def get_all():
         log.info("found micropython version : {}".format(version))
         # folder/{family}_{version}_frozen
         family = 'mpy'
-        stub_path = stubfolder( '{}_{}_frozen'.format(family, flat_version(version)))
-        get_mpy.get_frozen(stub_path, mpy_path, lib_path='../micropython-lib', version = version)
+        stub_path = stubfolder('{}_{}_frozen'.format(family, flat_version(version)))
+        get_mpy.get_frozen(stub_path, version=version, pyy_path=mpy_path, lib_path='../micropython-lib')
     else:
         log.warning('Unable to find the micropython repo in folder : {}'.format(mpy_path))
 
-    # todo add eralier version(s) tags have been removed ...
+    # todo add earlier version(s) tags have been removed ...
     get_lobo.get_frozen(stub_path=STUB_FOLDER + '/esp32_LoBo_3_2_24_Frozen')
 
     # now generate typeshed files for all scripts

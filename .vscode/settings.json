@@ -29,6 +29,8 @@
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
+    "peacock.color": "#613206",
+    "python.pythonPath": "C:\\Python\\Python38\\python.exe",
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#914b09",
         "activityBar.activeBorder": "#0bb45d",
@@ -45,6 +47,5 @@
         "titleBar.inactiveBackground": "#61320699",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#613206",
 
 }

@@ -20,9 +20,9 @@ import glob
 import os
 import re
 import shutil
-import utils
-
 import logging
+
+import utils
 log = logging.getLogger(__name__)
 # log.setLevel(level=logging.DEBUG)
 
@@ -39,7 +39,7 @@ class FreezeError(Exception):
 # do not change method name
 # freeze_as_mpy is only used by the unix port.
 def freeze_as_mpy(path, script=None, opt=0):
-    log.debug(" - freeze_as_mpy({},script={},opt={})".format(path,script,opt) )
+    log.debug(" - freeze_as_mpy({},script={},opt={})".format(path, script, opt))
     freeze(path, script, opt)
 
 # do not change method name
@@ -116,7 +116,7 @@ def freezedry(path, script):
     if stub_dir:
         log.info("freezedry : {:<30} to {}".format(script, stub_dir))
         dest_path = os.path.dirname(os.path.join(stub_dir, script))
-        # todo: ensure folder, including possible path prefix for script
+        # ensure folder, including possible path prefix for script
         os.makedirs(dest_path, exist_ok=True)
         # copy file
         try:
@@ -213,7 +213,7 @@ def get_frozen_folders(stub_path: str, mpy_path: str, lib_path: str, version:str
 
         dest_path = os.path.join(stub_path, mpy_port, mpy_board)
         log.info("freezedry : {:<30} to {}".format(script, dest_path))
-        # ensure folder, including possible path prefic for script todo:
+        # ensure folder, including possible path prefix for script todo:
         os.makedirs(dest_path, exist_ok=True)
         # copy file
         shutil.copy2(script, dest_path)
@@ -221,9 +221,10 @@ def get_frozen_folders(stub_path: str, mpy_path: str, lib_path: str, version:str
             targets.append(dest_path)
         
     for dest_path in targets:
-        # make a module manifest 
+        # make a module manifest
         port = dest_path.split(os.path.sep)[-2]
-        utils.make_manifest(dest_path, family, port, version )
+        #todo: add board / variant into manifest files ?
+        utils.make_manifest(dest_path, family=family, port=port, fmly=fmly, version=version )
 
 
 
@@ -344,7 +345,7 @@ def get_frozen_manifest(manifests, stub_path: str, mpy_path: str, lib_path: str,
             log.error('freeze error executing "{}": {}'.format(manifest, er.args[0]))
 
         # make a module manifest 
-        utils.make_manifest(stub_dir, family, fmly, version)
+        utils.make_manifest(stub_dir, family, "frozen", fmly, version)
 
 
 
@@ -352,7 +353,7 @@ if __name__ == "__main__":
     # just run a quick test    
     logging.basicConfig(format='%(levelname)-8s:%(message)s',level=logging.INFO)
     # MicroPython
-    # todo: checkout micropython @ tag
+    # checkout micropython @ tag
     # get_frozen(stub_path='./scratch/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
     # get_frozen_folders(stub_path='./scratch/mpy_1_13_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib')
 

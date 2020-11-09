@@ -13,14 +13,17 @@ scratch/*
 # stubs
 board/stubs
 minified/stubs
+all_stubs
+all-stubs
 
 # ignore test coverage report
 .coverage
 htmlcov
 coverage_html_report
+coverage_report
 
 # OS specific stuff
 desktop.ini
 .pytest_cache/*
 
-coverage_report
+

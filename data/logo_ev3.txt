@@ -1,0 +1,21 @@
+#######################################################################
+# Lego EV3 MicroPython
+#######################################################################
+
+raw = """
+main parameters_c pybricks/uev3dev/messaging umachine
+_thread pybricks/init pybricks/uev3dev/sound uos
+array pybricks/display pybricks/uev3dev/util urandom
+boot pybricks/ev3brick sys ure
+btree pybricks/ev3devices termios uselect
+builtins pybricks/ev3devio tools usocket
+cmath pybricks/parameters ubinascii ussl
+ev3brick_c pybricks/robotics ucollections ustruct
+ev3devices_c pybricks/speaker ucryptolib utime
+ffi pybricks/tools uctypes utimeq
+framebuf pybricks/uev3dev/init uerrno uzlib
+gc pybricks/uev3dev/_alsa uhashlib websocket
+math pybricks/uev3dev/_wand uheapq
+micropython pybricks/uev3dev/display uio
+mmap pybricks/uev3dev/i2c ujson
+"""
