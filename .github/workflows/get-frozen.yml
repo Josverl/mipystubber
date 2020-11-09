@@ -47,7 +47,7 @@ jobs:
       - name: create symlink for all_stubs
         run: |
           cd ${{github.workspace}}/micropython-stubber
-          ln -s ${{github.workspace}}/micropython-stubs/stubs all-stubs
+          ln -s ${{github.workspace}}/micropython-stubs/stubs all-stubs --force
           
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
