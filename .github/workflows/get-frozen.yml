@@ -44,6 +44,11 @@ jobs:
           path: micropython
           fetch-depth: 0
 
+      - name: create symlink for all_stubs
+        run: |
+          cd ${{github.workspace}}/micropython-stubber
+          ln -s ${{github.workspace}}/micropython-stubs/stubs all-stubs
+          
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
