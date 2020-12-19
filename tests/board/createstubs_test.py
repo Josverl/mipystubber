@@ -12,8 +12,9 @@ import pytest
 )
 
 @pytest.mark.parametrize(
-    "firmware", [ ('micropython_1_12')  ]
+    "firmware", [ ('micropython_1_12') , ('micropython_1_13'), ('pycopy_3_3_2-25') ]
 )
+
 
 def test_createstubs(firmware, tmp_path, script_folder):
     # run createsubs in the unix version of micropython

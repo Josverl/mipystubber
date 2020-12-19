@@ -15,6 +15,7 @@ board/stubs
 minified/stubs
 all_stubs
 all-stubs
+stubs
 
 # ignore test coverage report
 .coverage

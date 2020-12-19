@@ -52,12 +52,17 @@ jobs:
         # ignore Unable to import '<upythonmodule>' (import-error)
         # ignore Module 'gc' has no 'mem_free' member (no-member)
 
-    # - name: Pytest common tests
-    #   run: |
-    #     pytest tests/common tests/board
-
     - name: Test with pytest
       run: pytest tests/common tests/board --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+
+    - name: report code coverage
+      uses: codecov/codecov-action@v1
+      with:
+        file: junit/test-results-${{ matrix.python-version }}.xml
+        name: codecov-umbrella # optional
+        verbose: true # optional (default = false)      
+      if: ${{ always() }}
+             
 
     - name: Upload pytest test results
       uses: actions/upload-artifact@v2
@@ -68,4 +73,16 @@ jobs:
       if: ${{ always() }}
 
 
-      
+
+    # does not work at all 
+    # - name: run coveralls
+    #   run: |
+    #     coveralls
+
+    # - name: Send to Coveralls
+    #   uses: coverallsapp/github-action@master
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #   if: ${{ always() }}
+
+

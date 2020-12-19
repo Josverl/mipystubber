@@ -1,5 +1,5 @@
 
-# Boost MicroPython in VSCode and other modern editors
+# Boost MicroPython productivity in VSCode
 
 The intellisense and code linting that is so prevalent in modern editors, does not work out-of-the-gate for MicroPython projects.
 While the language is Python, the modules used are different from CPython , and also different ports have different modules and classes , or the same class with different parameters.
@@ -50,13 +50,13 @@ MicroPython-Stubber is licensed under the MIT license, and all contributions sho
 
 -----------------------------
 
-# 1 - Approach to providing stub information
+# 1 - Approach to collecting stub information
 
 The stubs are used by 3 components.
 
-  2. Pylint
-  3. the VSCode Autocompletion service 
-  4. the VSCode Analysis server ( MPLS / Lancelot)
+  2. pylint
+   3. the VSCode Pylance Language Server
+   4. the VSCode Python add-in
 
 These 3 tools work together to provide code completion/prediction, type checking and all the other good things.
 For this the order in which these tools use, the stub folders is significant, and best results are when all use the same order. 
@@ -73,7 +73,7 @@ In most cases the best results are achieved by the below setup:
 Note that for some modules (such as the  `gc`, `time`  and `sys` modules) this approach does not work. 
  3. **Frozen stubs**. Most micropython firmwares include a number of python modules that have been included in the firmware as frozen modules in order to take up less memory.
  These modules have been extracted from the source code. 
- 4. **Firmware Stubs**. For all other modules that are included on the board, [micropython-stubber] or [micropy-cli] has been used to extract as much information as available, and provide that as stubs. While there is a lot of relevant and useful information for code completion, it does unfortunately not provide all details regarding parameters that the earlier  options may provide.
+ 4. **Firmware Stubs**. For all other modules that are included on the board, [micropython-stubber] or [micropy-cli] has been used to extract as much information as available, and provide that as stubs. While there is a lot of relevant and useful information for code completion, it does unfortunately not provide all details regarding parameters that the above options may provide.
 
 ## 1.1 - Stub collection process 
 
@@ -167,28 +167,55 @@ python.linting. ||| [Linting Settings](https://code.visualstudio.com/docs/python
 enabled | true   | Specifies whether to enable linting in general.|
 pylintEnabled | true | Specifies whether to enable Pylint.|
 
-### 3.2.1 - Microsoft Python Language Server settings  [MPLS]
 
-
-The language server settings apply when python.jediEnabled is false.
-
-Setting | Default   | Description | ref 
---------|-----------|--------------|--
-python.jediEnabled | Default *true*, must be set to FALSE | Indicates whether to use Jedi as the IntelliSense engine (true) or the Microsoft Python Language Server (false). Note that the language server requires a platform that supports .NET Core 2.1 or newer. |
-python.analysis. ||| [code analysis settings)](https://code.visualstudio.com/docs/python/settings-reference#_code-analysis-settings)
-typeshedPaths | [] | Paths to look for typeshed modules on GitHub.|
-
-*Our  long-term plan is to transition our Microsoft Python Language Server users over to Pylance and eventually deprecate and remove the old language server as a supported option*
 
 ### 3.2.2 - Pylance - pyright
 
-The intent is to adjust the configuration to support Lancelot to work in the same way as MPLS, but this currently runs into some issues where pylance cannot resolve builtins and other symbols 
+[Pylance]([Pylance - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)) is replacing MPLS and provides the same and more functionality.
 
 | Setting                        | Default   | Description                                                  |
 | ------------------------------ | --------- | ------------------------------------------------------------ |
 | python.analysis.stubPath       | ./typings | Used to allow a user to specify a path to a directory that contains custom type stubs. Each package's type stub file(s) are expected to be in its own subdirectory. |
 | python.analysis.autoSearchPath | true      | Used to automatically add search paths based on some predefined names (like `src`). |
 | python.analysis.extraPaths     | []        | Used to specify extra search paths for import resolution. This replaces the old `python.autoComplete.extraPaths` setting. |
+
+### 3.2.3 - Sample configuration for Pylance
+
+To update a project configuration from MPLS to Pylance is simple : 
+
+Open your VSCode settings file :  ` .vscode/settings.json`
+
+- change the  language server to Pylance ➡  `"python.languageServer": "Pylance",`
+- remove  the section: `python.autoComplete.typeshedPaths`
+- remove the section : `python.analysis.typeshedPaths`
+- optionally add :  `"python.analysis.autoSearchPath": true,`
+
+
+
+The result should be something like this :
+
+```  json
+{
+     "python.languageServer": "Pylance",
+     "python.analysis.autoSearchPath": true,
+     "python.autoComplete.extraPaths": [
+          "src/lib", 
+          "all-stubs/cpython_patch", 
+          "all-stubs/mpy_1_13-nightly_frozen/esp32/GENERIC", 
+          "all-stubs/esp32_1_13_0-103",
+     ]
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+}
+
+```
+
+If you notice problems :
+
+* The paths are case sensitive (which may not be apparent for your platform)
+* To allow the config to be used cross platform you can use forward slashes `/`, _note that this is also accepted on Windows_ 
+* If you prefer to use a backslash :  in JSON notation the `\` (backslash) MUST be escaped as `\\` (double backslash)
+* Remember to put the 'Frozen' module paths before the generated module paths. 
 
 References : 
 
@@ -201,51 +228,6 @@ possible testing / diag :
 [pyright/command-line.md at master · microsoft/pyright (github.com)](https://github.com/microsoft/pyright/blob/master/docs/command-line.md)
 
 
-
-
-### 3.2.3 - Sample configuration VSCode settings
-Note: the below settings include the paths to multiple folders, containing stubs for different firmware. 
-you can remove ( or //comment ) the lines of firmwares that you to not use.
-
-File: .vscode/settings.json
-
-<TODO: update paths to naming convention>
-
-```  json
-{
-    "python.linting.enabled": true,
-
-    "python.autoComplete.extraPaths": [
-        "stubs/esp32_LoBo_3_2_24_Frozen",
-        "stubs/esp32_LoBo_3_2_24",
-        "stubs/esp32_1_10_0_Frozen",
-        "stubs/esp32_1_10_0",
-    ],
-    "python.autoComplete.typeshedPaths": [
-        "stubs/esp32_LoBo_3_2_24_Frozen",
-        "stubs/esp32_LoBo_3_2_24",
-        "stubs/esp32_1_10_0_Frozen",
-        "stubs/esp32_1_10_0",
-    ],
-    "python.analysis.typeshedPaths": [
-        "stubs/esp32_LoBo_3_2_24_Frozen",
-        "stubs/esp32_LoBo_3_2_24",
-        "stubs/esp32_1_10_0_Frozen",
-        "stubs/esp32_1_10_0",
-    ],
-
-    "python.linting.pylintEnabled": true,
-}
-
-```
-
-If you notice problems :
-
-* The paths are case sensitive (which may not be apparent for your platform)
-
-* To allow the config to be used cross platform you can use forward slashes `/`, _note that this is also accepted on Windows_ 
-* If you prefer to use a backslash :  in JSON notation the `\` (backslash) MUST be escaped as `\\` (double backslash)
-* Remember to put the 'Frozen' module paths before the generated module paths. 
 
 ## 3.3 - pylint 
 
@@ -265,6 +247,22 @@ disable = missing-docstring, line-too-long, trailing-newlines, broad-except, log
         # the 2nd  line deals with the limited information in the generated stubs.
 
 ```
+
+
+
+## 3.3 - Deprecated - Microsoft Python Language Server settings  [MPLS]
+
+MPLS is being replaced by Pylance , and the below configuration is for reference only .
+
+The language server settings apply when python.jediEnabled is false.
+
+| Setting            | Default                              | Description                                                  | ref                                                          |
+| ------------------ | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| python.jediEnabled | Default *true*, must be set to FALSE | Indicates whether to use Jedi as the IntelliSense engine (true) or the Microsoft Python Language Server (false). Note that the language server requires a platform that supports .NET Core 2.1 or newer. |                                                              |
+| python.analysis.   |                                      |                                                              | [code analysis settings)](https://code.visualstudio.com/docs/python/settings-reference#_code-analysis-settings) |
+| typeshedPaths      | []                                   | Paths to look for typeshed modules on GitHub.                |                                                              |
+
+*Our  long-term plan is to transition our Microsoft Python Language Server users over to Pylance and eventually deprecate and remove the old language server as a supported option*
 
 
 
@@ -557,7 +555,7 @@ if you develop on other platform, it is quite likely that you may need to change
 * setup sister repos
 * run test to verify setup 
 
-# 7.1 - wresting with two pythons 
+# 7.1 - Wresting with two pythons 
 
 This project combines CPython and MicroPython in one project.  As a result you may/will need to switch the configuration of pylint and VSCode to match the section of code that you are working on.  This is caused by the fact that pylint does not support per-folder configuration 
 
@@ -781,7 +779,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [micropy-cli]: https://github.com/BradenM/micropy-cli
 [using-the-stubs]: https://github.com/Josverl/micropython-stubs#using-the-stubs
 [demo]:         docs/img/demo.gif	"demo of writing code using the stubs"
-[stub processing order]: docs/img/stuborder.png	"recommended stub processing order"
+[stub processing order]: docs/img/stuborder_pylance.png	"recommended stub processing order"
 [naming-convention]: #naming-convention-and-stub-folder-structure
 [all-stubs]: https://github.com/Josverl/micropython-stubs/blob/master/firmwares.md
 [micropython]: https://github.com/micropython/micropython

@@ -15,14 +15,17 @@ Collect modules and python stubs from MicroPython source projects (v1.12 +)
 # - 1.13 - using manifests.py, and support for variant
 # - 1.12 - using manifests.py, possible also include content of /port/modules folder ?
 # - 1.11 and older - include content of /port/modules folder if it exists
-
 import glob
 import os
 import re
 import shutil
 import logging
 
+import basicgit as git
+
 import utils
+from utils import clean_version, stubfolder, flat_version
+
 log = logging.getLogger(__name__)
 # log.setLevel(level=logging.DEBUG)
 
@@ -347,16 +350,30 @@ def get_frozen_manifest(manifests, stub_path: str, mpy_path: str, lib_path: str,
         # make a module manifest 
         utils.make_manifest(stub_dir, family, "frozen", fmly, version)
 
-
-
-if __name__ == "__main__":
-    # just run a quick test    
-    logging.basicConfig(format='%(levelname)-8s:%(message)s',level=logging.INFO)
-    # MicroPython
+def quicktest():
+    # just run a quick test       
     # checkout micropython @ tag
     # get_frozen(stub_path='./scratch/mpy_1_12/frozen', mpy_path='../micropython', lib_path='../micropython-lib')
     # get_frozen_folders(stub_path='./scratch/mpy_1_13_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib')
 
     #get_frozen(stub_path='./scratch/mpy_1_13_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.13.0')
     get_frozen(stub_path='./scratch/mpy_1_10_0_Frozen', mpy_path='../micropython', lib_path='../micropython-lib',version='1.10.0')
+
+if __name__ == "__main__":
+    "just gather for the current version"
+    logging.basicConfig(format='%(levelname)-8s:%(message)s', level=logging.INFO)
+    mpy_path = '../micropython'
+    lib_path = '../micropython-lib'
+    version = clean_version(git.get_tag(mpy_path))
+
+    if version:
+        log.info("found micropython version : {}".format(version))
+        # folder/{family}_{version}_frozen
+        family = 'mpy'
+        stub_path = stubfolder('{}_{}_frozen'.format(family, flat_version(version)))
+        get_frozen(stub_path, version=version, mpy_path=mpy_path, lib_path=lib_path)
+        exit(0)
+    else:
+        log.warning('Unable to find the micropython repo in folder : {}'.format(mpy_path))
+        exit(1)
 
